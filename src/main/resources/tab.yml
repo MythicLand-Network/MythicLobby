@@ -1,0 +1,13 @@
+enabled: true
+update-interval-ticks: 20
+header:
+  - ''
+  - '&7        Online players: &d<network_online>               '
+  - ''
+footer:
+  - ''
+  - '&7        mc.mythicland.cn               '
+  - ''
+name-format:
+  prefix: "<player_prefix>"
+  suffix: ""

@@ -1,0 +1,6 @@
+enabled: true
+format: "<player_prefix> <player_name>&7: &f%message%"
+mute-all:
+  enabled: false
+  bypass-permission: "mythiclobby.chat.mute.bypass"
+  denied-message: "&c你不能在这个服务器上发言。"

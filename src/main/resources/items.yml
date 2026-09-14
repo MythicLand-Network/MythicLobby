@@ -1,0 +1,13 @@
+items:
+  main:
+    slot: 4
+    material: "COMPASS"
+    amount: 1
+    name: "&dMenu &7(Right click)"
+    lore:
+      - "&7Click to choose a game!"
+    enchantments:
+      - "LURE:1"
+    hide-all-flags: true
+    commands:
+      - "[player] mlbmenu open main"

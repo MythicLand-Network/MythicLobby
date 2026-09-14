@@ -1,0 +1,14 @@
+enabled: true
+update-interval-ticks: 20
+title: "&dMythicLand &dNetWork"
+lines:
+  - '&7&m--------------------'
+  - ''
+  - '&fPlayer Online'
+  - '  &a<network_online>&7/<server_max_players>'
+  - ''
+  - 'You are'
+  - '  <player_prefix><player_name>'
+  - ''
+  - '&7&m--------------------'
+  - '&dmc.mythicland.cn'

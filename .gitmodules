@@ -1,0 +1,6 @@
+[submodule "dependencies/MythicFramework"]
+	path = dependencies/MythicFramework
+	url = https://github.com/ShanguanLinG/MythicFramework.git
+[submodule "dependencies/MythicNPCLib"]
+	path = dependencies/MythicNPCLib
+	url = https://github.com/ShanguanLinG/MythicNPCLib.git

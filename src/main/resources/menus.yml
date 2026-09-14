@@ -1,0 +1,42 @@
+main:
+  id: "main"
+  title: "&8选择游戏"
+  size: 27
+  permission: "mythiclobby.menu.main"
+  open-sound:
+    sound: "BLOCK_NOTE_BLOCK_PLING"
+    volume: 1.0
+    pitch: 1.0
+  click-sound:
+    sound: "CLICK"
+    volume: 1.0
+    pitch: 2.0
+  glass-enable: true
+  glass-color: 15
+  items:
+    ThePit:
+      name: "&aThe MythicLand Pit"
+      lore:
+        - "&8团队竞技"
+        - ""
+        - "&7跳进天坑与超过50名玩家实时对决。"
+        - "&7MythicLand中节奏最快的PVP游戏。"
+        - ""
+        - "&c前方高能!"
+        - "&c你已进入极限区域,"
+        - "&c不推荐新手游玩。"
+        - ""
+        - "&e点击选择子服!"
+      material: "DIRT"
+      amount: 1
+      slot: 13
+      keep-open: true
+      glow: true
+      hide-nbt: true
+      enchants:
+        - "DURABILITY:1"
+      left-click:
+        - "[connect] thepit"
+      right-click:
+        # 支持[player], [console], [connect], [message], [close]前缀。
+        - "[connect] thepit"

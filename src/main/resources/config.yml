@@ -1,0 +1,109 @@
+# 内置占位符, 插件内可通用
+# <player_name>: 玩家名称
+# <player_display_name>: 玩家显示名
+# <player_list_name>: TAB 列表名称
+# <player_uuid>: 玩家 UUID
+# <player_ping>: 玩家延迟
+# <player_world>: 玩家当前世界名
+# <player_x>: 玩家当前 X 坐标
+# <player_y>: 玩家当前 Y 坐标
+# <player_z>: 玩家当前 Z 坐标
+# <player_block_x>: 玩家脚下方块 X 坐标
+# <player_block_y>: 玩家脚下方块 Y 坐标
+# <player_block_z>: 玩家脚下方块 Z 坐标
+# <player_yaw>: 玩家朝向 yaw
+# <player_pitch>: 玩家朝向 pitch
+# <player_health>: 玩家当前生命值
+# <player_max_health>: 玩家最大生命值
+# <player_food>: 玩家当前饥饿值
+# <player_level>: 玩家当前等级
+# <player_exp>: 玩家当前经验进度
+# <player_total_exp>: 玩家总经验
+# <player_gamemode>: 玩家当前游戏模式
+# <player_allow_flight>: 玩家是否允许飞行
+# <player_walk_speed>: 玩家当前步行速度
+# <player_fly_speed>: 玩家当前飞行速度
+# <player_prefix>: 玩家前缀, LuckPerms 存在时自动读取
+# <player_suffix>: 玩家后缀, LuckPerms 存在时自动读取
+# <player_primary_group>: 玩家主权限组, LuckPerms 存在时自动读取
+# <network_online>: Bungee 全网络在线人数
+# <network_online:hub01>: 指定 BC 子服在线人数
+# <network_online_sum:hub01,hub02>: 多个 BC 子服在线人数之和
+# <server_online>: 当前 Bukkit 服务器在线人数
+# <world_online>: 玩家所在世界在线人数
+# <server_max_players>: 当前服务器最大玩家数
+
+enabled: true
+
+block-command-tab:
+  enabled: true
+  bypass-permission: "mythiclobby.commandtab.bypass"
+
+lobby-worlds:
+  - "world"
+
+spawn:
+  enabled: true
+  teleport-on:
+    join: true
+    respawn: true
+    death: true
+    return-to-lobby: true
+  location:
+    world: "world"
+    x: 0.5
+    y: 100.0
+    z: 0.5
+    yaw: 0.0
+    pitch: 0.0
+
+player-state:
+  apply-on:
+    join: true
+    respawn: true
+    world-change: true
+  gamemode: 2
+  health: 20.0
+  food-level: 20
+  saturation: 20.0
+  extinguish: true
+  clear-active-potions: true
+  allow-flight: false
+  walk-speed: 0.2
+  fly-speed: 0.1
+
+protections:
+  block-break: true
+  block-place: true
+  bucket-fill: true
+  bucket-empty: true
+  block-interact: true
+  item-drop: true
+  item-pickup: true
+  inventory-move: true
+  inventory-drag: true
+  inventory-number-key: true
+  consume-items: true
+  hunger-change: true
+  pvp-damage: true
+  mob-damage: true
+  fall-damage: true
+  fire-damage: true
+  void-damage: true
+  projectile-damage: true
+  explosion-damage: true
+
+messages:
+  join-message: "&a<player_name> &7joined the game."
+  quit-message: "&c<player_name> &7left the game."
+
+world-rules:
+  disable-weather-change: true
+  disable-mob-spawn: true
+  disable-item-spawn: true
+  disable-leaves-decay: true
+  disable-block-explode: true
+  disable-entity-explode: true
+  lock-time:
+    enabled: true
+    value: 6000
