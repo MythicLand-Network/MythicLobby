@@ -87,16 +87,14 @@ public class NpcCommand extends AbstractCommand {
     }
 
     public void info(Player player) {
-        CommandHelpTheme.sendDivider(player);
-        CommandHelpTheme.sendCommand(player, "/mlbnpc", "create <display>", "- 创建 NPC, 支持&颜色代码和\\n换行");
-        CommandHelpTheme.sendCommand(player, "/mlbnpc", "sel [name]", "- 不带参数选中视线 NPC, 带参数按名称选中");
-        CommandHelpTheme.sendCommand(player, "/mlbnpc", "remove", "- 删除当前选中的 NPC");
-        CommandHelpTheme.sendCommand(player, "/mlbnpc", "tph", "- 将当前选中的 NPC 传送到你这里");
-        CommandHelpTheme.sendCommand(player, "/mlbnpc", "cmd add <command>", "- 添加交互命令");
-        CommandHelpTheme.sendCommand(player, "/mlbnpc", "cmd remove <index>", "- 删除一条交互命令");
-        CommandHelpTheme.sendCommand(player, "/mlbnpc", "cmd list", "- 查看已绑定命令");
-        CommandHelpTheme.sendCommand(player, "/mlbnpc", "cmd clear", "- 清空所有交互命令");
-        CommandHelpTheme.sendDivider(player);
+        CommandHelpTheme.sendUsage(player, "/mlbnpc create <display>");
+        CommandHelpTheme.sendUsage(player, "/mlbnpc sel [name]");
+        CommandHelpTheme.sendUsage(player, "/mlbnpc remove");
+        CommandHelpTheme.sendUsage(player, "/mlbnpc tph");
+        CommandHelpTheme.sendUsage(player, "/mlbnpc cmd add <command>");
+        CommandHelpTheme.sendUsage(player, "/mlbnpc cmd remove <index>");
+        CommandHelpTheme.sendUsage(player, "/mlbnpc cmd list");
+        CommandHelpTheme.sendUsage(player, "/mlbnpc cmd clear");
     }
 
     public void create(Player player, String display) {

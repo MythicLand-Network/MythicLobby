@@ -35,9 +35,7 @@ public final class MenuCommand extends AbstractCommand {
     }
 
     public void info(Player player) {
-        CommandHelpTheme.sendDivider(player);
-        CommandHelpTheme.sendCommand(player, "/mlbmenu", "open <menuId>", "- 打开指定菜单");
-        CommandHelpTheme.sendDivider(player);
+        CommandHelpTheme.sendUsage(player, "/mlbmenu open <menuId>");
     }
 
     public void open(Player player, String menuId) {

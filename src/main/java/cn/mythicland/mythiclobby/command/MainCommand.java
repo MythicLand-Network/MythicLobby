@@ -52,14 +52,12 @@ public class MainCommand extends AbstractCommand {
     }
 
     public void info(Player player) {
-        CommandHelpTheme.sendDivider(player);
-        CommandHelpTheme.sendCommand(player, "/spawn", "", "- 传送到大厅出生点");
-        CommandHelpTheme.sendCommand(player, "/mlb", "reload", "- 重载插件配置与运行模块");
-        CommandHelpTheme.sendCommand(player, "/mlb", "setspawn", "- 设置大厅出生点");
-        CommandHelpTheme.sendCommand(player, "/mlbnpc", "", "- 查看 NPC 管理命令");
-        CommandHelpTheme.sendCommand(player, "/mlbholo", "", "- 查看悬浮字管理命令");
-        CommandHelpTheme.sendCommand(player, "/mlbmenu", "open <menuId>", "- 打开指定菜单");
-        CommandHelpTheme.sendDivider(player);
+        CommandHelpTheme.sendUsage(player, "/spawn");
+        CommandHelpTheme.sendUsage(player, "/mlb reload");
+        CommandHelpTheme.sendUsage(player, "/mlb setspawn");
+        CommandHelpTheme.sendUsage(player, "/mlbnpc");
+        CommandHelpTheme.sendUsage(player, "/mlbholo");
+        CommandHelpTheme.sendUsage(player, "/mlbmenu open <menuId>");
     }
 
     public void reload(CommandSender sender) {

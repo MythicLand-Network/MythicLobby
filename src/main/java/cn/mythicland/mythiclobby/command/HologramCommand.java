@@ -57,10 +57,8 @@ public final class HologramCommand extends AbstractCommand {
     }
 
     public void info(Player player) {
-        CommandHelpTheme.sendDivider(player);
-        CommandHelpTheme.sendCommand(player, "/mlbholo", "create <name> <display>", "- 创建一个新的悬浮字");
-        CommandHelpTheme.sendCommand(player, "/mlbholo", "remove <name>", "- 删除指定悬浮字");
-        CommandHelpTheme.sendDivider(player);
+        CommandHelpTheme.sendUsage(player, "/mlbholo create <name> <display>");
+        CommandHelpTheme.sendUsage(player, "/mlbholo remove <name>");
     }
 
     public void create(Player player, String hologramName, String display) {
