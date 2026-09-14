@@ -29,6 +29,12 @@ public class MainCommand extends AbstractCommand {
     @CommandRoute(path = {"mythiclobby"}, usages = "/mythiclobby")
     private void executeInfo(CommandContext context) {
         Player player = CommandPlayers.require(context);
+        if (player != null) this.root(player, context.label());
+    }
+
+    @CommandRoute(path = {"mythiclobby", "help"}, usages = "/mythiclobby help")
+    private void executeHelp(CommandContext context) {
+        Player player = CommandPlayers.require(context);
         if (player != null) this.info(player);
     }
 
@@ -53,11 +59,17 @@ public class MainCommand extends AbstractCommand {
 
     public void info(Player player) {
         CommandHelpTheme.sendUsage(player, "/spawn");
+        CommandHelpTheme.sendUsage(player, "/mlb help");
         CommandHelpTheme.sendUsage(player, "/mlb reload");
         CommandHelpTheme.sendUsage(player, "/mlb setspawn");
         CommandHelpTheme.sendUsage(player, "/mlbnpc");
         CommandHelpTheme.sendUsage(player, "/mlbholo");
         CommandHelpTheme.sendUsage(player, "/mlbmenu open <menuId>");
+    }
+
+    public void root(Player player, String label) {
+        player.sendMessage("§c用法: /" + label + " <子命令>");
+        player.sendMessage("§c使用 /" + label + " help 查看所有命令。");
     }
 
     public void reload(CommandSender sender) {
