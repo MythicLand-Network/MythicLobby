@@ -10,12 +10,20 @@ public record StoredNpc(
         String name,
         List<String> displayLines,
         Location location,
+        String skinPlayerName,
         List<String> commands
 ) {
-    public StoredNpc(String name, List<String> displayLines, Location location, List<String> commands) {
+    public StoredNpc(
+            String name,
+            List<String> displayLines,
+            Location location,
+            String skinPlayerName,
+            List<String> commands
+    ) {
         this.name = Objects.requireNonNull(name, "name");
         this.displayLines = new ArrayList<>(Objects.requireNonNull(displayLines, "displayLines"));
         this.location = Objects.requireNonNull(location, "location").clone();
+        this.skinPlayerName = skinPlayerName;
         this.commands = new ArrayList<>(Objects.requireNonNull(commands, "commands"));
     }
 
@@ -53,16 +61,20 @@ public record StoredNpc(
         return location();
     }
 
+    public String getSkinPlayerName() {
+        return skinPlayerName;
+    }
+
     public List<String> getCommands() {
         return commands();
     }
 
     public StoredNpc withLocation(Location location) {
-        return new StoredNpc(name, displayLines, location, commands);
+        return new StoredNpc(name, displayLines, location, skinPlayerName, commands);
     }
 
     public StoredNpc withCommands(List<String> commands) {
-        return new StoredNpc(name, displayLines, location, commands);
+        return new StoredNpc(name, displayLines, location, skinPlayerName, commands);
     }
 
     public StoredNpc addCommand(String command) {

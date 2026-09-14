@@ -32,11 +32,11 @@ public final class ChatService {
     }
 
     public boolean shouldBlockChat(Player player) {
-        return settings.muteAllEnabled() && !hasMuteBypass(player);
+        return settings.muteAllEnabled();
     }
 
     public String getMuteDeniedMessage() {
-        return CC.translate(settings.muteDeniedMessage());
+        return CC.translate(ChatSettings.DEFAULT_MUTE_DENIED_MESSAGE);
     }
 
     public void notifyMuteDenied(Player player) {
@@ -56,36 +56,10 @@ public final class ChatService {
         boolean enabled = yaml.getBoolean(ChatConfigKey.ENABLED.getPath(), true);
         String format = yaml.getString(ChatConfigKey.FORMAT.getPath(), ChatSettings.DEFAULT_FORMAT);
         boolean muteAllEnabled = yaml.getBoolean(ChatConfigKey.MUTE_ALL_ENABLED.getPath(), false);
-        String muteBypassPermission = yaml.getString(
-                ChatConfigKey.MUTE_ALL_BYPASS_PERMISSION.getPath(),
-                ChatSettings.DEFAULT_MUTE_BYPASS_PERMISSION
-        );
-        String muteDeniedMessage = yaml.getString(
-                ChatConfigKey.MUTE_ALL_DENIED_MESSAGE.getPath(),
-                ChatSettings.DEFAULT_MUTE_DENIED_MESSAGE
-        );
         if (format == null || format.trim().isEmpty()) {
             logger.warning("chat.yml: format is empty, falling back to the default format.");
             format = ChatSettings.DEFAULT_FORMAT;
         }
-
-        if (muteBypassPermission == null) {
-            logger.warning("chat.yml: mute-all.bypass-permission is missing, falling back to the default permission.");
-            muteBypassPermission = ChatSettings.DEFAULT_MUTE_BYPASS_PERMISSION;
-        } else {
-            muteBypassPermission = muteBypassPermission.trim();
-        }
-
-        if (muteDeniedMessage == null) {
-            logger.warning("chat.yml: mute-all.denied-message is missing, falling back to the default message.");
-            muteDeniedMessage = ChatSettings.DEFAULT_MUTE_DENIED_MESSAGE;
-        }
-
-        return new ChatSettings(enabled, format, muteAllEnabled, muteBypassPermission, muteDeniedMessage);
-    }
-
-    private boolean hasMuteBypass(Player player) {
-        String bypassPermission = settings.muteBypassPermission();
-        return !bypassPermission.isEmpty() && player.hasPermission(bypassPermission);
+        return new ChatSettings(enabled, format, muteAllEnabled);
     }
 }

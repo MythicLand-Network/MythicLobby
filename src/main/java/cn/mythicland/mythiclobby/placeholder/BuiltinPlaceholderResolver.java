@@ -67,16 +67,22 @@ final class BuiltinPlaceholderResolver {
         values.put("player_level", Integer.toString(player == null ? 0 : player.getLevel()));
         values.put("player_exp", formatDouble(player == null ? 0.0F : player.getExp()));
         values.put("player_total_exp", Integer.toString(player == null ? 0 : player.getTotalExperience()));
-        values.put("player_gamemode", player == null || player.getGameMode() == null ? "" : player.getGameMode().name());
+        values.put(
+                "player_gamemode",
+                player == null || player.getGameMode() == null ? "" : player.getGameMode().name()
+        );
         values.put("player_allow_flight", Boolean.toString(player != null && player.getAllowFlight()));
         values.put("player_walk_speed", formatDouble(player == null ? 0.0F : player.getWalkSpeed()));
         values.put("player_fly_speed", formatDouble(player == null ? 0.0F : player.getFlySpeed()));
-        values.put("player_prefix", luckPermsData.prefix());
-        values.put("player_suffix", luckPermsData.suffix());
-        values.put("player_primary_group", luckPermsData.primaryGroup());
+        values.put("luckperms_prefix", luckPermsData.prefix());
+        values.put("luckperms_suffix", luckPermsData.suffix());
+        values.put("luckperms_primary_group_name", luckPermsData.primaryGroup());
         values.put("network_online", Integer.toString(bungeeConnectService.getNetworkOnlineCount()));
         values.put("server_online", Integer.toString(Bukkit.getOnlinePlayers().size()));
-        values.put("world_online", Integer.toString(world == null ? Bukkit.getOnlinePlayers().size() : world.getPlayers().size()));
+        values.put(
+                "world_online",
+                Integer.toString(world == null ? Bukkit.getOnlinePlayers().size() : world.getPlayers().size())
+        );
         values.put("server_max_players", Integer.toString(Bukkit.getMaxPlayers()));
         return values;
     }
@@ -173,9 +179,9 @@ final class BuiltinPlaceholderResolver {
         aliases.put("%player_food%", "player_food");
         aliases.put("%player_level%", "player_level");
         aliases.put("%player_gamemode%", "player_gamemode");
-        aliases.put("%luckperms_prefix%", "player_prefix");
-        aliases.put("%luckperms_suffix%", "player_suffix");
-        aliases.put("%luckperms_primary_group_name%", "player_primary_group");
+        aliases.put("%luckperms_prefix%", "luckperms_prefix");
+        aliases.put("%luckperms_suffix%", "luckperms_suffix");
+        aliases.put("%luckperms_primary_group_name%", "luckperms_primary_group_name");
         aliases.put("%bungee_total%", "network_online");
         aliases.put("%server_online%", "server_online");
         aliases.put("%world_online%", "world_online");

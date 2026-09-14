@@ -57,11 +57,8 @@ public final class PluginLoader {
 
     private static void start(PluginContext context) {
         context.bungeeConnectService().start();
-        context.hologramService().loadAll();
-        context.npcManager().loadAll();
         context.lobbyProtectionService().start();
         context.commandTabBlockService().start();
-        context.hologramService().start();
         context.lobbyItemService().start();
         context.scoreboardService().start();
         context.displayService().start();
@@ -74,8 +71,6 @@ public final class PluginLoader {
         context.scoreboardService().shutdown();
         context.commandTabBlockService().shutdown();
         context.lobbyProtectionService().shutdown();
-        context.hologramService().shutdown();
-        context.npcManager().shutdown();
         context.bungeeConnectService().shutdown();
         context.components().unload();
     }

@@ -9,7 +9,6 @@ import cn.mythicland.mythiclobby.hologram.HologramService;
 import cn.mythicland.mythiclobby.item.LobbyItemService;
 import cn.mythicland.mythiclobby.listener.CommandTabBlockService;
 import cn.mythicland.mythiclobby.lobby.LobbyProtectionService;
-import cn.mythicland.mythiclobby.message.MessageService;
 import cn.mythicland.mythiclobby.npc.NpcManager;
 import cn.mythicland.mythiclobby.placeholder.PlaceholderService;
 import cn.mythicland.mythiclobby.proxy.BungeeConnectService;
@@ -27,7 +26,6 @@ public final class PluginReloader {
     private final LobbyProtectionService lobbyProtectionService;
     private final CommandTabBlockService commandTabBlockService;
     private final PlaceholderService placeholderService;
-    private final MessageService messageService;
     private final HologramService hologramService;
     private final LobbyItemService lobbyItemService;
     private final MenuManager menuManager;
@@ -43,7 +41,6 @@ public final class PluginReloader {
             LobbyProtectionService lobbyProtectionService,
             CommandTabBlockService commandTabBlockService,
             PlaceholderService placeholderService,
-            MessageService messageService,
             HologramService hologramService,
             LobbyItemService lobbyItemService,
             MenuManager menuManager,
@@ -58,7 +55,6 @@ public final class PluginReloader {
         this.lobbyProtectionService = lobbyProtectionService;
         this.commandTabBlockService = commandTabBlockService;
         this.placeholderService = placeholderService;
-        this.messageService = messageService;
         this.hologramService = hologramService;
         this.lobbyItemService = lobbyItemService;
         this.menuManager = menuManager;
@@ -68,7 +64,6 @@ public final class PluginReloader {
     public void reloadAll() {
         configManager.reloadAll();
         placeholderService.reloadAll();
-        messageService.reloadAll();
         bungeeConnectService.reloadAll();
         npcManager.reloadAll();
         hologramService.reloadAll();

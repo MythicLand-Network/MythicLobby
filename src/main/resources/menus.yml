@@ -2,7 +2,7 @@ main:
   id: "main"
   title: "&8选择游戏"
   size: 27
-  permission: "mythiclobby.menu.main"
+  permission: "group.default"
   open-sound:
     sound: "BLOCK_NOTE_BLOCK_PLING"
     volume: 1.0
@@ -38,5 +38,4 @@ main:
       left-click:
         - "[connect] thepit"
       right-click:
-        # 支持[player], [console], [connect], [message], [close]前缀。
         - "[connect] thepit"

@@ -1,6 +1,9 @@
 package cn.mythicland.mythiclobby.hologram;
 
 import cn.mythicland.framework.component.InjectComponent;
+import cn.mythicland.framework.component.LoadOrder;
+import cn.mythicland.framework.component.LoadPhase;
+import cn.mythicland.framework.component.ManagedLifecycle;
 import cn.mythicland.mythiclobby.platform.hologram.HologramPlatform;
 import cn.mythicland.mythiclobby.util.LocationNormalizer;
 import org.bukkit.Bukkit;
@@ -18,7 +21,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 @InjectComponent
-public final class HologramService {
+@LoadOrder(phase = LoadPhase.ADAPTERS)
+public final class HologramService implements ManagedLifecycle {
     public static final double LINE_SPACING = 0.25D;
 
     private final JavaPlugin plugin;
@@ -29,11 +33,32 @@ public final class HologramService {
     private final Map<String, StoredHologram> hologramsByName = new LinkedHashMap<>();
     private final Map<UUID, Map<String, ViewerHologramState>> viewerStatesByPlayer = new LinkedHashMap<>();
 
-    public HologramService(JavaPlugin plugin, HologramRepository repository, HologramRenderer renderer, HologramPlatform hologramPlatform) {
+    public HologramService(
+            JavaPlugin plugin,
+            HologramRepository repository,
+            HologramRenderer renderer,
+            HologramPlatform hologramPlatform
+    ) {
         this.plugin = plugin;
         this.repository = repository;
         this.renderer = renderer;
         this.hologramPlatform = hologramPlatform;
+    }
+
+    @Override
+    public void load() {
+        this.loadAll();
+        this.start();
+    }
+
+    @Override
+    public void reload() {
+        this.reloadAll();
+    }
+
+    @Override
+    public void unload() {
+        this.shutdown();
     }
 
     public void loadAll() {
@@ -186,9 +211,15 @@ public final class HologramService {
         return new ViewerHologramState(storedHologram.name(), viewerState, storedHologram.location(), renderedLines);
     }
 
-    private void refreshState(Player viewer, StoredHologram storedHologram, ViewerHologramState state, List<String> renderedLines) {
+    private void refreshState(
+            Player viewer,
+            StoredHologram storedHologram,
+            ViewerHologramState state,
+            List<String> renderedLines
+    ) {
         Location location = storedHologram.location();
-        if (sameLocation(state.getBaseLocation(), location) && Objects.equals(state.getRenderedLines(), renderedLines)) {
+        if (sameLocation(state.getBaseLocation(), location)
+                && Objects.equals(state.getRenderedLines(), renderedLines)) {
             return;
         }
 
@@ -295,7 +326,12 @@ public final class HologramService {
         private Location baseLocation;
         private List<String> renderedLines;
 
-        private ViewerHologramState(String hologramName, Object viewerState, Location baseLocation, List<String> renderedLines) {
+        private ViewerHologramState(
+                String hologramName,
+                Object viewerState,
+                Location baseLocation,
+                List<String> renderedLines
+        ) {
             this.hologramName = hologramName;
             this.viewerState = viewerState;
             this.baseLocation = baseLocation.clone();

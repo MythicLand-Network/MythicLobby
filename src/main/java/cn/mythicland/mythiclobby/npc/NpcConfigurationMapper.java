@@ -37,6 +37,7 @@ public final class NpcConfigurationMapper {
         npcsSection.set(basePath + ".name", storedNpc.getName());
         npcsSection.set(basePath + ".display", new ArrayList<>(storedNpc.getDisplayLines()));
         writeLocation(npcsSection, basePath + ".location", storedNpc.getLocation());
+        npcsSection.set(basePath + ".skin", storedNpc.getSkinPlayerName());
         npcsSection.set(basePath + ".commands", new ArrayList<>(storedNpc.getCommands()));
     }
 
@@ -71,6 +72,7 @@ public final class NpcConfigurationMapper {
                 name,
                 displayLines,
                 location,
+                trimToNull(npcSection.getString("skin")),
                 sanitizeCommands(key, npcSection)
         ));
     }

@@ -7,9 +7,5 @@ pluginManagement {
 
 rootProject.name = 'MythicLobby'
 
-if (file('dependencies/MythicFramework').isDirectory()) {
-    includeBuild('dependencies/MythicFramework')
-}
-if (file('dependencies/MythicNPCLib').isDirectory()) {
-    includeBuild('dependencies/MythicNPCLib')
-}
+includeBuild('../MythicFramework')
+includeBuild('../MythicNPCLib')

@@ -1,5 +1,5 @@
 enabled: true
 update-interval-ticks: 20
 name-format:
-  prefix: "<player_prefix>"
+  prefix: "<luckperms_prefix>"
   suffix: ""

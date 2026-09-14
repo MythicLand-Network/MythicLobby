@@ -25,6 +25,7 @@ public final class LobbyProtectionService {
     private static final float DEFAULT_WALK_SPEED = 0.2F;
     private static final float DEFAULT_FLY_SPEED = 0.1F;
     private static final long DEFAULT_LOCK_TIME = 6000L;
+    private static final String COMMAND_TAB_BYPASS_PERMISSION = "mythiclobby.commandtab.bypass";
 
     private final JavaPlugin plugin;
     private final LobbyConfig lobbyConfig;
@@ -64,13 +65,8 @@ public final class LobbyProtectionService {
             return false;
         }
 
-        CommandTabCompleteSettings commandTabComplete = settings.commandTabComplete();
-        if (!commandTabComplete.enabled()) {
-            return false;
-        }
-
-        String bypassPermission = commandTabComplete.bypassPermission();
-        return bypassPermission.isEmpty() || !player.hasPermission(bypassPermission);
+        return settings.commandTabComplete().enabled()
+                && !player.hasPermission(COMMAND_TAB_BYPASS_PERMISSION);
     }
 
     public boolean shouldHandleDeathRespawn(Player player) {
@@ -330,13 +326,20 @@ public final class LobbyProtectionService {
             logger.warning("config.yml: lobby-worlds is empty, lobby protections are effectively disabled.");
         }
 
-        return new LobbySettings(enabled, commandTabCompleteSettings, lobbyWorlds, spawnSettings, playerStateSettings, protectionSettings, worldRuleSettings);
+        return new LobbySettings(
+                enabled,
+                commandTabCompleteSettings,
+                lobbyWorlds,
+                spawnSettings,
+                playerStateSettings,
+                protectionSettings,
+                worldRuleSettings
+        );
     }
 
     private CommandTabCompleteSettings readCommandTabCompleteSettings(YamlConfiguration yaml) {
         boolean enabled = yaml.getBoolean("block-command-tab.enabled", false);
-        String bypassPermission = trimToEmpty(yaml.getString("block-command-tab.bypass-permission"));
-        return new CommandTabCompleteSettings(enabled, bypassPermission);
+        return new CommandTabCompleteSettings(enabled);
     }
 
     private Set<String> readLobbyWorlds(YamlConfiguration yaml) {
@@ -398,9 +401,20 @@ public final class LobbyProtectionService {
         }
 
         int foodLevel = Math.max(0, Math.min(20, yaml.getInt("player-state.food-level", 20)));
-        float saturation = Math.max(0.0F, Math.min(20.0F, (float) yaml.getDouble("player-state.saturation", 20.0D)));
-        float walkSpeed = clampSpeed("player-state.walk-speed", (float) yaml.getDouble("player-state.walk-speed", DEFAULT_WALK_SPEED), DEFAULT_WALK_SPEED);
-        float flySpeed = clampSpeed("player-state.fly-speed", (float) yaml.getDouble("player-state.fly-speed", DEFAULT_FLY_SPEED), DEFAULT_FLY_SPEED);
+        float saturation = Math.max(
+                0.0F,
+                Math.min(20.0F, (float) yaml.getDouble("player-state.saturation", 20.0D))
+        );
+        float walkSpeed = clampSpeed(
+                "player-state.walk-speed",
+                (float) yaml.getDouble("player-state.walk-speed", DEFAULT_WALK_SPEED),
+                DEFAULT_WALK_SPEED
+        );
+        float flySpeed = clampSpeed(
+                "player-state.fly-speed",
+                (float) yaml.getDouble("player-state.fly-speed", DEFAULT_FLY_SPEED),
+                DEFAULT_FLY_SPEED
+        );
 
         return new PlayerStateSettings(
                 applyOnSettings,
@@ -476,7 +490,10 @@ public final class LobbyProtectionService {
             case 2:
                 return GameMode.ADVENTURE;
             default:
-                logger.warning("config.yml: player-state.gamemode '" + rawGameMode + "' is invalid, falling back to 2 (ADVENTURE).");
+                logger.warning(
+                        "config.yml: player-state.gamemode '" + rawGameMode
+                                + "' is invalid, falling back to 2 (ADVENTURE)."
+                );
                 return GameMode.ADVENTURE;
         }
     }
@@ -594,7 +611,7 @@ public final class LobbyProtectionService {
         }
     }
 
-    private record CommandTabCompleteSettings(boolean enabled, String bypassPermission) {
+    private record CommandTabCompleteSettings(boolean enabled) {
     }
 
     private record SpawnSettings(

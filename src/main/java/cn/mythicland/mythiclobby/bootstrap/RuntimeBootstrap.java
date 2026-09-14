@@ -1,5 +1,7 @@
 package cn.mythicland.mythiclobby.bootstrap;
 
+import cn.mythicland.framework.runtime.RuntimeLibraryLoader;
+import cn.mythicland.framework.runtime.SelectiveChildFirstClassLoader;
 import cn.mythicland.mythiclobby.MythicLobby;
 
 import java.lang.reflect.InvocationTargetException;
@@ -8,12 +10,13 @@ import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public final class RuntimeBootstrap {
     private static final String MAIN_LOADER = "cn.mythicland.mythiclobby.runtime.MainLoader";
 
     private final MythicLobby plugin;
-    private RuntimeClassLoader classLoader;
+    private SelectiveChildFirstClassLoader classLoader;
     private Object mainLoader;
     private Method loadMethod;
     private Method enableMethod;
@@ -30,11 +33,24 @@ public final class RuntimeBootstrap {
             urls.addAll(new RuntimeLibraryLoader(
                     this.plugin.getDataFolder().toPath(),
                     this.plugin.getClass().getClassLoader(),
-                    this.plugin.getLogger()::info
-            ).resolveLibraries());
-            this.classLoader = new RuntimeClassLoader(
+                    "META-INF/mythiclobby-libraries.properties",
+                    this.plugin.getLogger()::info,
+                    this.plugin.getLogger()::warning
+            ).resolveLibraries(Set.of("bukkit")));
+            this.classLoader = new SelectiveChildFirstClassLoader(
                     urls.toArray(URL[]::new),
-                    this.plugin.getClass().getClassLoader()
+                    this.plugin.getClass().getClassLoader(),
+                    List.of(
+                            "cn.mythicland.mythiclobby.",
+                            "cn.mythicland.framework.",
+                            "cn.mythicland.npclib.",
+                            "org.reflections.",
+                            "javassist.",
+                            "fr.mrmicky.fastboard.",
+                            "it.unimi.dsi.fastutil."
+                    ),
+                    List.of("cn.mythicland.mythiclobby.MythicLobby"),
+                    List.of("cn.mythicland.mythiclobby.bootstrap.")
             );
             Class<?> type = Class.forName(MAIN_LOADER, true, this.classLoader);
             this.mainLoader = type.getConstructor(MythicLobby.class).newInstance(this.plugin);
@@ -80,7 +96,9 @@ public final class RuntimeBootstrap {
     }
 
     private void invoke(Method method) {
-        if (this.mainLoader == null || method == null) throw new IllegalStateException("MythicLobby runtime is not loaded");
+        if (this.mainLoader == null || method == null) {
+            throw new IllegalStateException("MythicLobby runtime is not loaded");
+        }
         ClassLoader previous = Thread.currentThread().getContextClassLoader();
         try {
             Thread.currentThread().setContextClassLoader(this.classLoader);

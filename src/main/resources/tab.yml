@@ -9,5 +9,5 @@ footer:
   - '&7        mc.mythicland.cn               '
   - ''
 name-format:
-  prefix: "<player_prefix>"
+  prefix: "<luckperms_prefix>"
   suffix: ""

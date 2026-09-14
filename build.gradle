@@ -1,9 +1,9 @@
-import java.security.MessageDigest
-
 plugins {
     id 'java'
     id 'com.gradleup.shadow' version '8.3.0'
 }
+
+apply from: rootProject.file('../MythicFramework/gradle/runtime-library-manifest.gradle')
 
 group = 'cn.mythicland'
 version = '1.0.0'
@@ -154,37 +154,12 @@ tasks.named('compileJava') {
 }
 
 def generatedResources = layout.buildDirectory.dir('generated/runtime-resources')
-
-sourceSets.main.resources.srcDir(generatedResources)
-
-tasks.register('generateRuntimeDependencyManifest') {
-    outputs.file(generatedResources.map { it.file('META-INF/mythiclobby-libraries.properties') })
-    doLast {
-        def artifacts = configurations.runtimeLibraries.resolvedConfiguration.resolvedArtifacts
-                .sort { left, right ->
-                    def leftId = left.moduleVersion.id
-                    def rightId = right.moduleVersion.id
-                    "${leftId.group}:${left.name}:${leftId.version}" <=> "${rightId.group}:${right.name}:${rightId.version}"
-                }
-        def output = generatedResources.get().file('META-INF/mythiclobby-libraries.properties').asFile
-        output.parentFile.mkdirs()
-        output.withWriter('UTF-8') { writer ->
-            writer.println("library.count=${artifacts.size()}")
-            artifacts.eachWithIndex { artifact, index ->
-                def id = artifact.moduleVersion.id
-                def coordinate = "${id.group}:${artifact.name}:${id.version}"
-                def file = artifact.file
-                def digest = MessageDigest.getInstance('SHA-256').digest(file.bytes).encodeHex().toString()
-                def path = "${id.group.replace('.', '/')}/${artifact.name}/${id.version}/${file.name}"
-                writer.println("library.${index}.coordinate=${coordinate}")
-                writer.println("library.${index}.fileName=${file.name}")
-                writer.println("library.${index}.downloadUrls=https://repo.maven.apache.org/maven2/${path},https://repo1.maven.org/maven2/${path}")
-                writer.println("library.${index}.sha256=${digest}")
-                writer.println("library.${index}.platform=bukkit")
-            }
-        }
-    }
-}
+def runtimeDependencyManifest = registerRuntimeLibraryManifest(
+        'generateRuntimeDependencyManifest',
+        generatedResources,
+        'META-INF/mythiclobby-libraries.properties',
+        [bukkit: configurations.runtimeLibraries]
+)
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
@@ -201,7 +176,7 @@ tasks.withType(AbstractArchiveTask).configureEach {
 }
 
 tasks.named('processResources') {
-    dependsOn tasks.named('generateRuntimeDependencyManifest')
+    dependsOn runtimeDependencyManifest
     def props = [version: version]
     inputs.properties props
     filteringCharset = 'UTF-8'
@@ -214,7 +189,7 @@ tasks.named('shadowJar') {
     archiveFileName = 'MythicLobby.jar'
     configurations = [project.configurations.firstPartyEmbedded]
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
-    dependsOn tasks.named('generateRuntimeDependencyManifest')
+    dependsOn runtimeDependencyManifest
 }
 
 tasks.named('jar') {
@@ -223,7 +198,7 @@ tasks.named('jar') {
 
 tasks.named('sourcesJar') {
     archiveFileName = 'MythicLobby-sources.jar'
-    dependsOn tasks.named('generateRuntimeDependencyManifest')
+    dependsOn runtimeDependencyManifest
 }
 
 tasks.named('assemble') {

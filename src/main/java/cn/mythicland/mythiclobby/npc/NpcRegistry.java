@@ -2,8 +2,10 @@ package cn.mythicland.mythiclobby.npc;
 
 import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.mythiclobby.log.PluginLogger;
+import cn.mythicland.mythiclobby.npc.skin.SkinService;
 import cn.mythicland.mythiclobby.platform.npc.NpcPlatform;
 import cn.mythicland.mythiclobby.placeholder.PlaceholderService;
+import cn.mythicland.mythiclobby.platform.skin.SkinData;
 import cn.mythicland.mythiclobby.util.CC;
 import cn.mythicland.mythiclobby.util.NpcNames;
 import org.bukkit.Bukkit;
@@ -28,6 +30,7 @@ public final class NpcRegistry {
     private final Plugin plugin;
     private final PluginLogger logger;
     private final NpcPlatform npcPlatform;
+    private final SkinService skinService;
     private final PlaceholderService placeholderService;
     private final Map<String, ManagedNpc> npcsByName = new LinkedHashMap<>();
     private final Map<UUID, ManagedNpc> npcsByUniqueId = new LinkedHashMap<>();
@@ -37,11 +40,13 @@ public final class NpcRegistry {
             Plugin plugin,
             PluginLogger logger,
             NpcPlatform npcPlatform,
+            SkinService skinService,
             PlaceholderService placeholderService
     ) {
         this.plugin = plugin;
         this.logger = logger;
         this.npcPlatform = npcPlatform;
+        this.skinService = skinService;
         this.placeholderService = placeholderService;
     }
 
@@ -61,6 +66,7 @@ public final class NpcRegistry {
                 hasPlaceholderTokens(storedNpc.getDisplayLines())
         );
         register(managedNpc);
+        applySkin(managedNpc);
         showToAllPlayers(runtimeNpc);
         return managedNpc;
     }
@@ -86,6 +92,7 @@ public final class NpcRegistry {
         managedNpc.setRuntimeNpc(replacementNpc);
         managedNpc.setRenderedDisplayLines(renderedDisplayLines);
         npcsByUniqueId.put(npcPlatform.getUniqueId(replacementNpc), managedNpc);
+        applySkin(managedNpc);
         showToAllPlayers(replacementNpc);
     }
 
@@ -139,6 +146,7 @@ public final class NpcRegistry {
     }
 
     public void showAllToPlayer(Player player) {
+        applyPlayerSkin(player);
         for (ManagedNpc managedNpc : npcsByName.values()) {
             Object runtimeNpc = managedNpc.getRuntimeNpc();
             if (!npcPlatform.isShown(runtimeNpc, player)) {
@@ -223,11 +231,14 @@ public final class NpcRegistry {
         managedNpc.setRuntimeNpc(replacementNpc);
         managedNpc.setRenderedDisplayLines(renderedDisplayLines);
         npcsByUniqueId.put(npcPlatform.getUniqueId(replacementNpc), managedNpc);
+        applySkin(managedNpc);
         showToAllPlayers(replacementNpc);
     }
 
     private Object createNpcInstance(StoredNpc storedNpc, List<String> renderedDisplayLines) {
-        return npcPlatform.spawn(storedNpc.getLocation(), renderedDisplayLines);
+        String skinPlayerName = storedNpc.getSkinPlayerName();
+        SkinData cachedSkin = skinPlayerName == null ? null : skinService.getCachedSkin(skinPlayerName);
+        return npcPlatform.spawn(storedNpc.getLocation(), renderedDisplayLines, cachedSkin);
     }
 
     private List<String> renderDisplayLines(StoredNpc storedNpc) {
@@ -259,6 +270,57 @@ public final class NpcRegistry {
         }
         int secondPercent = line.indexOf('%', firstPercent + 1);
         return secondPercent > firstPercent + 1;
+    }
+
+    private void applySkin(ManagedNpc managedNpc) {
+        String skinPlayerName = managedNpc.getStoredNpc().getSkinPlayerName();
+        if (skinPlayerName == null) return;
+        if (skinService.getCachedSkin(skinPlayerName) != null) return;
+
+        Object runtimeNpc = managedNpc.getRuntimeNpc();
+        UUID expectedNpcId = npcPlatform.getUniqueId(runtimeNpc);
+        skinService.fetchSkin(skinPlayerName).thenAccept(skin -> updateSkin(
+                expectedNpcId,
+                runtimeNpc,
+                managedNpc,
+                skinPlayerName,
+                skin
+        ));
+    }
+
+    private void updateSkin(
+            UUID expectedNpcId,
+            Object runtimeNpc,
+            ManagedNpc managedNpc,
+            String skinPlayerName,
+            SkinData skin
+    ) {
+        if (skin == null) {
+            if (skinService.isActive()) {
+                logger.warning("Failed to fetch Mojang skin for NPC " + managedNpc.getStoredNpc().getName()
+                        + " with source player " + skinPlayerName);
+            }
+            return;
+        }
+
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            ManagedNpc currentNpc = npcsByUniqueId.get(expectedNpcId);
+            if (currentNpc == null || currentNpc.getRuntimeNpc() != runtimeNpc) return;
+            if (!skinService.isActive()) return;
+            npcPlatform.updateSkin(runtimeNpc, skin);
+        });
+    }
+
+    private void applyPlayerSkin(Player player) {
+        SkinData skin = npcPlatform.getSkin(player);
+        if (skin == null) return;
+        skinService.cacheSkin(player.getName(), skin);
+
+        for (ManagedNpc managedNpc : npcsByName.values()) {
+            String skinPlayerName = managedNpc.getStoredNpc().getSkinPlayerName();
+            if (skinPlayerName == null || !skinPlayerName.equalsIgnoreCase(player.getName())) continue;
+            npcPlatform.updateSkin(managedNpc.getRuntimeNpc(), skin);
+        }
     }
 
 }

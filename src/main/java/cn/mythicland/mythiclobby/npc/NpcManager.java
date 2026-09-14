@@ -1,9 +1,14 @@
 package cn.mythicland.mythiclobby.npc;
 
 import cn.mythicland.framework.component.InjectComponent;
+import cn.mythicland.framework.component.LoadOrder;
+import cn.mythicland.framework.component.LoadPhase;
+import cn.mythicland.framework.component.ManagedLifecycle;
+import cn.mythicland.mythiclobby.util.CC;
 import cn.mythicland.mythiclobby.util.LocationNormalizer;
 import cn.mythicland.mythiclobby.util.NpcNames;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,9 +21,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Pattern;
 
 @InjectComponent
-public final class NpcManager {
+@LoadOrder(phase = LoadPhase.ADAPTERS)
+public final class NpcManager implements ManagedLifecycle {
+    private static final Pattern MINECRAFT_NAME_PATTERN = Pattern.compile("^[A-Za-z0-9_]{3,16}$");
+
     private final JavaPlugin plugin;
     private final NpcRepository repository;
     private final NpcRegistry registry;
@@ -28,6 +37,21 @@ public final class NpcManager {
         this.plugin = plugin;
         this.repository = repository;
         this.registry = registry;
+    }
+
+    @Override
+    public void load() {
+        this.loadAll();
+    }
+
+    @Override
+    public void reload() {
+        this.reloadAll();
+    }
+
+    @Override
+    public void unload() {
+        this.shutdown();
     }
 
     public void loadAll() {
@@ -66,6 +90,7 @@ public final class NpcManager {
                 npcName,
                 displayLines,
                 LocationNormalizer.normalizeSpawnLocation(location),
+                resolveSkinPlayerName(displayLines, creator),
                 new ArrayList<>()
         );
 
@@ -91,7 +116,8 @@ public final class NpcManager {
         }
 
         repository.delete(removedNpc.getStoredNpc().getName());
-        selectedNpcByPlayer.entrySet().removeIf(entry -> NpcNames.normalize(entry.getValue()).equals(NpcNames.normalize(npcName)));
+        selectedNpcByPlayer.entrySet().removeIf(entry -> NpcNames.normalize(entry.getValue())
+                .equals(NpcNames.normalize(npcName)));
         return true;
     }
 
@@ -219,6 +245,17 @@ public final class NpcManager {
             generatedId = "npc-" + Long.toUnsignedString(ThreadLocalRandom.current().nextLong(), 36);
         } while (registry.containsName(generatedId));
         return generatedId;
+    }
+
+    private String resolveSkinPlayerName(List<String> displayLines, Player creator) {
+        if (!displayLines.isEmpty()) {
+            String firstLine = ChatColor.stripColor(CC.translate(displayLines.get(0)));
+            if (firstLine != null) {
+                String candidate = firstLine.trim();
+                if (MINECRAFT_NAME_PATTERN.matcher(candidate).matches()) return candidate;
+            }
+        }
+        return creator.getName();
     }
 
 }

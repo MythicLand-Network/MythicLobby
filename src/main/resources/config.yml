@@ -23,9 +23,9 @@
 # <player_allow_flight>: 玩家是否允许飞行
 # <player_walk_speed>: 玩家当前步行速度
 # <player_fly_speed>: 玩家当前飞行速度
-# <player_prefix>: 玩家前缀, LuckPerms 存在时自动读取
-# <player_suffix>: 玩家后缀, LuckPerms 存在时自动读取
-# <player_primary_group>: 玩家主权限组, LuckPerms 存在时自动读取
+# <luckperms_prefix>: 玩家前缀, LuckPerms 存在时自动读取
+# <luckperms_suffix>: 玩家后缀, LuckPerms 存在时自动读取
+# <luckperms_primary_group_name>: 玩家主权限组, LuckPerms 存在时自动读取
 # <network_online>: Bungee 全网络在线人数
 # <network_online:hub01>: 指定 BC 子服在线人数
 # <network_online_sum:hub01,hub02>: 多个 BC 子服在线人数之和
@@ -37,7 +37,6 @@ enabled: true
 
 block-command-tab:
   enabled: true
-  bypass-permission: "mythiclobby.commandtab.bypass"
 
 lobby-worlds:
   - "world"
