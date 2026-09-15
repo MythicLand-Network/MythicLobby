@@ -1,5 +1,6 @@
 package cn.mythicland.mythiclobby.bootstrap;
 
+import cn.mythicland.framework.runtime.FrameworkRuntimeClassLoading;
 import cn.mythicland.framework.runtime.RuntimeBootstrap;
 import cn.mythicland.mythiclobby.MythicLobby;
 
@@ -21,16 +22,18 @@ public final class RuntimeBootstrapFactory {
                         Set.of("bukkit")
                 )
                 .loggers(plugin.getLogger()::info, plugin.getLogger()::warning)
-                .childFirstPackages(List.of(
-                        "cn.mythicland.mythiclobby.",
-                        "cn.mythicland.npclib.",
-                        "org.reflections.",
-                        "javassist.",
-                        "fr.mrmicky.fastboard.",
-                        "it.unimi.dsi.fastutil."
+                .classLoading(FrameworkRuntimeClassLoading.bukkit(
+                        List.of(
+                                "cn.mythicland.mythiclobby.",
+                                "cn.mythicland.npclib.",
+                                "org.reflections.",
+                                "javassist.",
+                                "fr.mrmicky.fastboard.",
+                                "it.unimi.dsi.fastutil."
+                        ),
+                        List.of(MythicLobby.class.getName()),
+                        List.of("cn.mythicland.mythiclobby.bootstrap.")
                 ))
-                .parentFirstClasses(List.of(MythicLobby.class.getName()))
-                .parentFirstPackages(List.of("cn.mythicland.mythiclobby.bootstrap."))
                 .build();
     }
 }
