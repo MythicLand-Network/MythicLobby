@@ -1,6 +1,7 @@
 package cn.mythicland.mythiclobby;
 
-import cn.mythicland.mythiclobby.bootstrap.RuntimeBootstrap;
+import cn.mythicland.framework.runtime.RuntimeBootstrap;
+import cn.mythicland.mythiclobby.bootstrap.RuntimeBootstrapFactory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MythicLobby extends JavaPlugin {
@@ -9,7 +10,7 @@ public final class MythicLobby extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            this.runtimeBootstrap = new RuntimeBootstrap(this);
+            this.runtimeBootstrap = RuntimeBootstrapFactory.create(this);
             this.runtimeBootstrap.load();
             this.runtimeBootstrap.enable();
         } catch (RuntimeException exception) {
