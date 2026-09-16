@@ -2,7 +2,7 @@ package cn.mythicland.mythiclobby;
 
 import cn.mythicland.mythiclobby.config.ConfigManager;
 import cn.mythicland.mythiclobby.display.DisplayService;
-import cn.mythicland.mythiclobby.gui.menu.MenuManager;
+import cn.mythicland.mythiclobby.gui.menu.LobbyMenuService;
 import cn.mythicland.mythiclobby.item.LobbyItemService;
 import cn.mythicland.mythiclobby.listener.CommandTabBlockService;
 import cn.mythicland.mythiclobby.lobby.LobbyProtectionService;
@@ -19,7 +19,7 @@ public record PluginContext(
         ConfigManager configManager,
         ComponentContainer components,
         PluginReloader pluginReloader,
-        MenuManager menuManager,
+        LobbyMenuService menuManager,
         BungeeConnectService bungeeConnectService,
         LobbyProtectionService lobbyProtectionService,
         CommandTabBlockService commandTabBlockService,

@@ -3,6 +3,7 @@ package cn.mythicland.mythiclobby;
 import cn.mythicland.framework.component.ComponentContainer;
 import cn.mythicland.framework.component.ComponentResolver;
 import cn.mythicland.framework.component.InjectComponent;
+import cn.mythicland.framework.menu.MenuManager;
 import cn.mythicland.mythiclobby.log.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ class ComponentGraphTest {
         bindings.add(PluginLogger.class);
         bindings.add(ComponentContainer.class);
         bindings.add(ComponentResolver.class);
+        bindings.add(MenuManager.class);
 
         for (Class<?> component : components) {
             if (component.isInterface() || Modifier.isAbstract(component.getModifiers())) continue;

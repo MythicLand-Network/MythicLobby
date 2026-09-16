@@ -3,8 +3,8 @@ plugins {
     id 'com.gradleup.shadow' version '8.3.0'
 }
 
-apply from: rootProject.file('dependencies/MythicFramework/gradle/runtime-library-manifest.gradle')
-apply from: rootProject.file('dependencies/MythicFramework/gradle/spigot-1.8.8.gradle')
+apply from: rootProject.file('../MythicFramework/gradle/runtime-library-manifest.gradle')
+apply from: rootProject.file('../MythicFramework/gradle/spigot-1.8.8.gradle')
 
 group = 'cn.mythicland'
 version = '1.0.0'

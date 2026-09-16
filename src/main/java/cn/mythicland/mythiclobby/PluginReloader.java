@@ -4,7 +4,7 @@ import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.mythiclobby.chat.ChatService;
 import cn.mythicland.mythiclobby.config.ConfigManager;
 import cn.mythicland.mythiclobby.display.DisplayService;
-import cn.mythicland.mythiclobby.gui.menu.MenuManager;
+import cn.mythicland.mythiclobby.gui.menu.LobbyMenuService;
 import cn.mythicland.mythiclobby.hologram.HologramService;
 import cn.mythicland.mythiclobby.item.LobbyItemService;
 import cn.mythicland.mythiclobby.listener.CommandTabBlockService;
@@ -28,7 +28,7 @@ public final class PluginReloader {
     private final PlaceholderService placeholderService;
     private final HologramService hologramService;
     private final LobbyItemService lobbyItemService;
-    private final MenuManager menuManager;
+    private final LobbyMenuService menuManager;
     private final TabService tabService;
 
     public PluginReloader(
@@ -43,7 +43,7 @@ public final class PluginReloader {
             PlaceholderService placeholderService,
             HologramService hologramService,
             LobbyItemService lobbyItemService,
-            MenuManager menuManager,
+            LobbyMenuService menuManager,
             TabService tabService
     ) {
         this.configManager = configManager;

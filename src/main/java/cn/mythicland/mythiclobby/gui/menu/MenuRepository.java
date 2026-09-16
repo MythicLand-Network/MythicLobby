@@ -1,6 +1,7 @@
 package cn.mythicland.mythiclobby.gui.menu;
 
 import cn.mythicland.framework.component.InjectComponent;
+import cn.mythicland.framework.menu.ClickType;
 import cn.mythicland.mythiclobby.gui.button.MenuButton;
 import cn.mythicland.mythiclobby.config.MenuConfig;
 import cn.mythicland.mythiclobby.gui.model.MenuClickAction;
@@ -35,10 +36,16 @@ public final class MenuRepository {
 
     private final MenuConfig menuConfig;
     private final PluginLogger logger;
+    private final LobbyMenuCommandExecutor commandExecutor;
 
-    public MenuRepository(MenuConfig menuConfig, PluginLogger logger) {
+    public MenuRepository(
+            MenuConfig menuConfig,
+            PluginLogger logger,
+            LobbyMenuCommandExecutor commandExecutor
+    ) {
         this.menuConfig = menuConfig;
         this.logger = logger;
+        this.commandExecutor = commandExecutor;
     }
 
     public void reload() {
@@ -88,7 +95,12 @@ public final class MenuRepository {
         MenuSound clickSound = parseSound(menuId, section, "click-sound");
         boolean glassEnabled = section.getBoolean("glass-enable", false);
         short glassColor = parseGlassColor(menuId, section.getInt("glass-color", DEFAULT_GLASS_COLOR));
-        Map<Integer, MenuButton> items = readItems(menuId, section.getConfigurationSection("items"), size);
+        Map<Integer, MenuButton> items = readItems(
+                menuId,
+                section.getConfigurationSection("items"),
+                size,
+                clickSound
+        );
 
         return new ConfigMenu(
                 resolvedMenuId,
@@ -99,11 +111,17 @@ public final class MenuRepository {
                 clickSound,
                 glassEnabled,
                 glassColor,
-                items
+                items,
+                commandExecutor.renderer()
         );
     }
 
-    private Map<Integer, MenuButton> readItems(String menuId, ConfigurationSection itemsSection, int inventorySize) {
+    private Map<Integer, MenuButton> readItems(
+            String menuId,
+            ConfigurationSection itemsSection,
+            int inventorySize,
+            MenuSound clickSound
+    ) {
         Map<Integer, MenuButton> itemsBySlot = new LinkedHashMap<>();
         if (itemsSection == null) {
             return itemsBySlot;
@@ -116,7 +134,7 @@ public final class MenuRepository {
                 continue;
             }
 
-            MenuButton button = readItem(menuId, itemId, itemSection, inventorySize);
+            MenuButton button = readItem(menuId, itemId, itemSection, inventorySize, clickSound);
             if (button == null) {
                 continue;
             }
@@ -129,7 +147,13 @@ public final class MenuRepository {
         return itemsBySlot;
     }
 
-    private MenuButton readItem(String menuId, String itemId, ConfigurationSection itemSection, int inventorySize) {
+    private MenuButton readItem(
+            String menuId,
+            String itemId,
+            ConfigurationSection itemSection,
+            int inventorySize,
+            MenuSound clickSound
+    ) {
         Material material = parseMaterial(menuId, itemId, itemSection.getString("material"));
         if (material == null) {
             return null;
@@ -159,7 +183,9 @@ public final class MenuRepository {
                 .glow(glow)
                 .enchantments(enchantments)
                 .hideNbt(hideNbt)
-                .commands(commands);
+                .commands(commands)
+                .clickSound(clickSound)
+                .commandExecutor(commandExecutor);
         if (amount != null) {
             builder.amount(amount);
         }
@@ -168,11 +194,11 @@ public final class MenuRepository {
         }
 
         for (MenuClickAction clickAction : clickActions) {
-            if (clickAction.clickType() == MenuClickType.LEFT) {
+            if (clickAction.clickType() == ClickType.LEFT) {
                 builder.leftClick(clickAction.commands());
                 continue;
             }
-            if (clickAction.clickType() == MenuClickType.RIGHT) {
+            if (clickAction.clickType() == ClickType.RIGHT) {
                 builder.rightClick(clickAction.commands());
             }
         }
@@ -291,8 +317,8 @@ public final class MenuRepository {
 
     private List<MenuClickAction> readClickActions(String menuId, String itemId, ConfigurationSection itemSection) {
         List<MenuClickAction> clickActions = new ArrayList<>(2);
-        addClickAction(clickActions, menuId, itemId, itemSection, "left-click", MenuClickType.LEFT);
-        addClickAction(clickActions, menuId, itemId, itemSection, "right-click", MenuClickType.RIGHT);
+        addClickAction(clickActions, menuId, itemId, itemSection, "left-click", ClickType.LEFT);
+        addClickAction(clickActions, menuId, itemId, itemSection, "right-click", ClickType.RIGHT);
         return clickActions;
     }
 
@@ -302,7 +328,7 @@ public final class MenuRepository {
             String itemId,
             ConfigurationSection itemSection,
             String path,
-            MenuClickType clickType
+            ClickType clickType
     ) {
         if (itemSection.contains(path) && !itemSection.isList(path)) {
             warn(menuId, "item '" + itemId + "' " + path + " must be a list");

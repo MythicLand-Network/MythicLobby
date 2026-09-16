@@ -1,103 +1,68 @@
 package cn.mythicland.mythiclobby.gui.menu;
 
-import cn.mythicland.mythiclobby.gui.button.AbstractButton;
-import cn.mythicland.mythiclobby.gui.model.MenuHolder;
-import cn.mythicland.mythiclobby.gui.model.MenuSound;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import cn.mythicland.framework.menu.Menu;
+import cn.mythicland.framework.menu.AbstractButton;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
-import java.util.Collection;
-
-public abstract class AbstractMenu {
+public abstract class AbstractMenu extends cn.mythicland.framework.menu.AbstractMenu {
     private final String id;
     private final String title;
     private final int size;
     private final String permission;
-    private final MenuSound openSound;
-    private final MenuSound clickSound;
 
-    protected AbstractMenu(
-            String id,
-            String title,
-            int size,
-            String permission,
-            MenuSound openSound,
-            MenuSound clickSound
-    ) {
+    protected AbstractMenu(String id, String title, int size, String permission) {
         this.id = id;
         this.title = title;
         this.size = size;
         this.permission = permission;
-        this.openSound = openSound;
-        this.clickSound = clickSound;
     }
 
-    public String getId() {
-        return id;
+    public final String getId() {
+        return this.id;
     }
 
-    public String getTitle() {
-        return title;
+    @Override
+    public final String buildTitle(Player player) {
+        return this.title;
     }
 
-    public int getRows() {
-        return size / 9;
+    @Override
+    protected final int resolveRowCount(Player player) {
+        return this.size / 9;
     }
 
-    public int getSize() {
-        return size;
+    public final int getRows() {
+        return this.size / 9;
     }
 
-    public String getPermission() {
-        return permission;
+    public final int getSize() {
+        return this.size;
     }
 
-    public MenuSound getOpenSound() {
-        return openSound;
+    public final String getPermission() {
+        return this.permission;
     }
 
-    public MenuSound getClickSound() {
-        return clickSound;
-    }
+    protected abstract void populateButtons(Player player, Menu menu);
 
-    public Inventory createInventory(Player player, MenuRenderer renderer) {
-        MenuHolder holder = new MenuHolder(this);
-        Inventory inventory = Bukkit.createInventory(holder, size, renderer.renderTitle(player, title));
-        holder.setInventory(inventory);
-        for (AbstractButton button : getButtons()) {
-            inventory.setItem(button.getSlot(), button.render(player, renderer));
-        }
-        loadBackgroundGlass(inventory, renderer);
-        return inventory;
-    }
-
-    public AbstractButton getButton(int slot) {
-        for (AbstractButton button : getButtons()) {
-            if (button.getSlot() == slot) {
-                return button;
-            }
-        }
-        return null;
+    @Override
+    protected final void populateMenu(Player player, Menu menu) {
+        this.populateButtons(player, menu);
+        this.populateBackground(menu);
     }
 
     protected Short getBackgroundGlassColor() {
         return null;
     }
 
-    private void loadBackgroundGlass(Inventory inventory, MenuRenderer renderer) {
-        Short glassColor = getBackgroundGlassColor();
-        if (glassColor == null) {
-            return;
-        }
-        for (int slot = 0; slot < inventory.getSize(); slot++) {
-            if (inventory.getItem(slot) != null && inventory.getItem(slot).getType() != Material.AIR) {
-                continue;
-            }
-            inventory.setItem(slot, renderer.createGlassPane(glassColor));
+    protected abstract AbstractButton createBackgroundButton(short color);
+
+    private void populateBackground(Menu menu) {
+        Short glassColor = this.getBackgroundGlassColor();
+        if (glassColor == null) return;
+        AbstractButton background = this.createBackgroundButton(glassColor);
+        for (int slot = 0; slot < menu.getSize(); slot++) {
+            if (!menu.hasButton(slot)) menu.setButton(slot, background);
         }
     }
-
-    protected abstract Collection<? extends AbstractButton> getButtons();
 }

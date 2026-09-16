@@ -1,5 +1,6 @@
 package cn.mythicland.mythiclobby.config;
 
+import cn.mythicland.framework.bukkit.config.AbstractYamlConfiguration;
 import cn.mythicland.framework.component.InjectComponent;
 
 import java.util.Collection;

@@ -1,11 +1,12 @@
 package cn.mythicland.mythiclobby.gui.button;
 
-import cn.mythicland.mythiclobby.gui.menu.AbstractMenu;
-import cn.mythicland.mythiclobby.gui.menu.MenuClickType;
-import cn.mythicland.mythiclobby.gui.menu.MenuManager;
+import cn.mythicland.framework.menu.ClickType;
+import cn.mythicland.framework.menu.MenuManager;
 import cn.mythicland.mythiclobby.gui.menu.MenuRenderer;
 import cn.mythicland.mythiclobby.gui.model.MenuCommand;
 import cn.mythicland.mythiclobby.gui.model.MenuItemEnchantment;
+import cn.mythicland.mythiclobby.gui.model.MenuSound;
+import cn.mythicland.mythiclobby.gui.menu.LobbyMenuCommandExecutor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -14,9 +15,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-public final class MenuButton extends AbstractButton {
+public final class MenuButton extends cn.mythicland.framework.menu.AbstractButton {
+    private final int slot;
     private final String id;
+    private final boolean keepOpen;
     private final Material material;
     private final String name;
     private final List<String> lore;
@@ -28,11 +32,13 @@ public final class MenuButton extends AbstractButton {
     private final List<MenuCommand> commands;
     private final List<MenuCommand> leftClickCommands;
     private final List<MenuCommand> rightClickCommands;
-    private final ClickHandler clickHandler;
+    private final MenuSound clickSound;
+    private final LobbyMenuCommandExecutor commandExecutor;
 
     private MenuButton(Builder builder) {
-        super(builder.requireSlot(), builder.keepOpen);
+        this.slot = builder.requireSlot();
         this.id = builder.resolveId();
+        this.keepOpen = builder.keepOpen;
         this.material = builder.requireMaterial();
         this.name = builder.resolveName();
         this.lore = builder.copyLines();
@@ -44,7 +50,8 @@ public final class MenuButton extends AbstractButton {
         this.commands = builder.copyCommands(builder.commands);
         this.leftClickCommands = builder.copyCommands(builder.leftClickCommands);
         this.rightClickCommands = builder.copyCommands(builder.rightClickCommands);
-        this.clickHandler = builder.clickHandler;
+        this.clickSound = builder.clickSound;
+        this.commandExecutor = Objects.requireNonNull(builder.commandExecutor, "commandExecutor");
     }
 
     public static Builder builder() {
@@ -57,6 +64,10 @@ public final class MenuButton extends AbstractButton {
 
     public String getId() {
         return id;
+    }
+
+    public int getSlot() {
+        return this.slot;
     }
 
     public Material getMaterial() {
@@ -104,32 +115,29 @@ public final class MenuButton extends AbstractButton {
     }
 
     @Override
-    public ItemStack render(Player player, MenuRenderer renderer) {
-        return renderer.renderItem(player, this);
+    public ItemStack buildDisplayItem(Player player) {
+        return this.commandExecutor.renderer().renderItem(player, this);
     }
 
     @Override
-    public void click(Player player, AbstractMenu menu, MenuManager menuManager, MenuClickType clickType) {
-        if (clickHandler != null) {
-            clickHandler.handle(player, menu, menuManager, clickType);
-            return;
-        }
-        menuManager.executeButtonCommands(player, menu, getCommands(clickType));
+    public void onClick(Player player, ClickType clickType, MenuManager menuManager) {
+        if (this.clickSound != null) this.clickSound.play(player);
+        this.commandExecutor.execute(player, this.getCommands(clickType), menuManager);
     }
 
-    public List<MenuCommand> getCommands(MenuClickType clickType) {
-        if (clickType == MenuClickType.LEFT && !leftClickCommands.isEmpty()) {
+    @Override
+    public boolean shouldClose(Player player, ClickType clickType) {
+        return !this.keepOpen;
+    }
+
+    public List<MenuCommand> getCommands(ClickType clickType) {
+        if (clickType.isLeft() && !leftClickCommands.isEmpty()) {
             return getLeftClickCommands();
         }
-        if (clickType == MenuClickType.RIGHT && !rightClickCommands.isEmpty()) {
+        if (clickType.isRight() && !rightClickCommands.isEmpty()) {
             return getRightClickCommands();
         }
         return getCommands();
-    }
-
-    @FunctionalInterface
-    public interface ClickHandler {
-        void handle(Player player, AbstractMenu menu, MenuManager menuManager, MenuClickType clickType);
     }
 
     public static final class Builder {
@@ -147,7 +155,8 @@ public final class MenuButton extends AbstractButton {
         private List<MenuCommand> commands = Collections.emptyList();
         private List<MenuCommand> leftClickCommands = Collections.emptyList();
         private List<MenuCommand> rightClickCommands = Collections.emptyList();
-        private ClickHandler clickHandler;
+        private MenuSound clickSound;
+        private LobbyMenuCommandExecutor commandExecutor;
 
         private Builder() {
         }
@@ -185,8 +194,9 @@ public final class MenuButton extends AbstractButton {
             return this;
         }
 
-        public void amount(int amount) {
+        public Builder amount(int amount) {
             this.amount = amount;
+            return this;
         }
 
         public Builder data(short data) {
@@ -273,8 +283,13 @@ public final class MenuButton extends AbstractButton {
             return this;
         }
 
-        public Builder onClick(ClickHandler clickHandler) {
-            this.clickHandler = clickHandler;
+        public Builder clickSound(MenuSound clickSound) {
+            this.clickSound = clickSound;
+            return this;
+        }
+
+        public Builder commandExecutor(LobbyMenuCommandExecutor commandExecutor) {
+            this.commandExecutor = commandExecutor;
             return this;
         }
 

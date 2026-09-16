@@ -6,7 +6,7 @@ import cn.mythicland.framework.command.CommandContext;
 import cn.mythicland.framework.command.CommandRoute;
 import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.mythiclobby.config.key.MessageKey;
-import cn.mythicland.mythiclobby.gui.menu.MenuManager;
+import cn.mythicland.mythiclobby.gui.menu.LobbyMenuService;
 import cn.mythicland.mythiclobby.message.MessageService;
 import cn.mythicland.mythiclobby.util.CommandHelpTheme;
 import org.bukkit.entity.Player;
@@ -14,10 +14,10 @@ import org.bukkit.entity.Player;
 @InjectComponent
 @CommandComponent
 public final class MenuCommand extends AbstractCommand {
-    private final MenuManager menuManager;
+    private final LobbyMenuService menuManager;
     private final MessageService messageService;
 
-    public MenuCommand(MenuManager menuManager, MessageService messageService) {
+    public MenuCommand(LobbyMenuService menuManager, MessageService messageService) {
         this.menuManager = menuManager;
         this.messageService = messageService;
     }
@@ -39,11 +39,11 @@ public final class MenuCommand extends AbstractCommand {
     }
 
     public void open(Player player, String menuId) {
-        MenuManager.OpenResult result = menuManager.openMenu(player, menuId);
-        if (result == MenuManager.OpenResult.OPENED) {
+        LobbyMenuService.OpenResult result = menuManager.openMenu(player, menuId);
+        if (result == LobbyMenuService.OpenResult.OPENED) {
             return;
         }
-        if (result == MenuManager.OpenResult.NO_PERMISSION) {
+        if (result == LobbyMenuService.OpenResult.NO_PERMISSION) {
             messageService.send(player, MessageKey.MENU_OPEN_NO_PERMISSION);
             return;
         }

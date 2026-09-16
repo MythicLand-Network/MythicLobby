@@ -1,12 +1,13 @@
 package cn.mythicland.mythiclobby.config;
 
 import cn.mythicland.framework.component.InjectComponent;
-import cn.mythicland.mythiclobby.log.PluginLogger;
+import cn.mythicland.framework.bukkit.config.AbstractYamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 @InjectComponent
 public final class MenuConfig extends AbstractYamlConfiguration {
-    public MenuConfig(Plugin plugin, ConfigManager configManager, PluginLogger logger) {
-        super(plugin, configManager, logger, "menus.yml");
+    public MenuConfig(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "menus.yml");
+        configManager.register(this);
     }
 }

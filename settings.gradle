@@ -7,5 +7,15 @@ pluginManagement {
 
 rootProject.name = 'MythicLobby'
 
-includeBuild('dependencies/MythicFramework')
-includeBuild('dependencies/MythicNPCLib')
+def frameworkDirectory = file('../MythicFramework')
+def npcLibDirectory = file('../MythicNPCLib')
+
+if (!frameworkDirectory.isDirectory()) {
+    throw new GradleException("Missing sibling project MythicFramework: ${frameworkDirectory}")
+}
+if (!npcLibDirectory.isDirectory()) {
+    throw new GradleException("Missing sibling project MythicNPCLib: ${npcLibDirectory}")
+}
+
+includeBuild(frameworkDirectory)
+includeBuild(npcLibDirectory)

@@ -2,8 +2,8 @@ package cn.mythicland.mythiclobby.listener;
 
 import cn.mythicland.framework.bukkit.ListenerComponent;
 import cn.mythicland.framework.component.InjectComponent;
+import cn.mythicland.framework.menu.MenuManager;
 import cn.mythicland.mythiclobby.lobby.LobbyProtectionService;
-import cn.mythicland.mythiclobby.gui.model.MenuHolder;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -44,9 +44,14 @@ import org.bukkit.inventory.ItemStack;
 @ListenerComponent
 public final class LobbyProtectionListener implements Listener {
     private final LobbyProtectionService lobbyProtectionService;
+    private final MenuManager menuManager;
 
-    public LobbyProtectionListener(LobbyProtectionService lobbyProtectionService) {
+    public LobbyProtectionListener(
+            LobbyProtectionService lobbyProtectionService,
+            MenuManager menuManager
+    ) {
         this.lobbyProtectionService = lobbyProtectionService;
+        this.menuManager = menuManager;
     }
 
     @EventHandler
@@ -147,7 +152,7 @@ public final class LobbyProtectionListener implements Listener {
         }
 
         Inventory topInventory = event.getView().getTopInventory();
-        if (topInventory != null && topInventory.getHolder() instanceof MenuHolder) {
+        if (this.menuManager.isManagedInventory(topInventory)) {
             if (event.getClickedInventory() != null && event.getClickedInventory().equals(player.getInventory())) {
                 event.setCancelled(true);
                 return;
