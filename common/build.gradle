@@ -1,0 +1,46 @@
+plugins {
+    id 'java-library'
+}
+
+apply from: rootProject.file('../MythicFramework/gradle/runtime-library-manifest.gradle')
+
+configurations {
+    commonRuntimeLibraries
+    bukkitRuntimeLibraries
+    velocityRuntimeLibraries
+}
+
+dependencies {
+    compileOnly 'cn.mythicland:mythic-framework-core:1.0.0'
+    testImplementation 'cn.mythicland:mythic-framework-core:1.0.0'
+
+    commonRuntimeLibraries 'org.reflections:reflections:0.10.2'
+    bukkitRuntimeLibraries 'fr.mrmicky:fastboard:2.1.5'
+    bukkitRuntimeLibraries 'it.unimi.dsi:fastutil:8.5.13'
+    velocityRuntimeLibraries 'org.yaml:snakeyaml:2.2'
+}
+
+def generatedResources = layout.buildDirectory.dir('generated/runtime-resources')
+def runtimeDependencyManifest = registerRuntimeLibraryManifest(
+        'generateRuntimeDependencyManifest',
+        generatedResources,
+        'META-INF/mythiclobby-libraries.properties',
+        [
+                common: configurations.commonRuntimeLibraries,
+                bukkit: configurations.bukkitRuntimeLibraries,
+                velocity: configurations.velocityRuntimeLibraries
+        ]
+)
+
+tasks.named('processResources') {
+    dependsOn runtimeDependencyManifest
+}
+
+tasks.named('jar') {
+    archiveFileName = 'MythicLobby-Common.jar'
+}
+
+tasks.named('sourcesJar') {
+    archiveFileName = 'MythicLobby-Common-sources.jar'
+    dependsOn runtimeDependencyManifest
+}

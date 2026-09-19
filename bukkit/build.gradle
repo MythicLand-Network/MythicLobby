@@ -1,0 +1,60 @@
+plugins {
+    id 'com.gradleup.shadow'
+}
+
+apply from: rootProject.file('../MythicFramework/gradle/runtime-library-manifest.gradle')
+apply from: rootProject.file('../MythicFramework/gradle/spigot-1.8.8.gradle')
+
+dependencies {
+    firstParty project(':common')
+    firstParty 'cn.mythicland:mythic-framework-core:1.0.0'
+    firstParty 'cn.mythicland:mythic-framework-bukkit:1.0.0'
+    firstParty 'cn.mythicland:mythic-npclib:1.0.0'
+
+    compileOnly files(spigot188Jar)
+    compileOnly 'fr.mrmicky:fastboard:2.1.5'
+    compileOnly 'it.unimi.dsi:fastutil:8.5.13'
+    compileOnly 'net.dmulloy2:ProtocolLib:5.4.0'
+    compileOnly 'me.clip:placeholderapi:2.11.7'
+    testImplementation files(spigot188Jar)
+    testImplementation 'net.dmulloy2:ProtocolLib:5.4.0'
+    testImplementation 'me.clip:placeholderapi:2.11.7'
+    testImplementation 'fr.mrmicky:fastboard:2.1.5'
+    testImplementation 'it.unimi.dsi:fastutil:8.5.13'
+    testImplementation 'org.reflections:reflections:0.10.2'
+}
+
+tasks.named('compileJava') {
+    dependsOn tasks.named('prepareSpigot188')
+}
+
+tasks.named('compileTestJava') {
+    dependsOn tasks.named('prepareSpigot188')
+}
+
+tasks.named('shadowJar') {
+    archiveFileName = 'MythicLobby-Bukkit.jar'
+    configurations = [project.configurations.firstPartyEmbedded]
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+}
+
+tasks.named('jar') {
+    archiveFileName = 'MythicLobby-Bukkit-plain.jar'
+}
+
+tasks.named('sourcesJar') {
+    archiveFileName = 'MythicLobby-Bukkit-sources.jar'
+}
+
+tasks.named('assemble') {
+    dependsOn tasks.named('shadowJar')
+}
+
+tasks.named('processResources') {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset = 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

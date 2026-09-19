@@ -38,7 +38,10 @@ public final class LoaderBootstrap {
         components.bind(menuManager);
         ScheduledTaskLifecycle scheduledTaskLifecycle = new ScheduledTaskLifecycle(components, taskScheduler);
         components.bind(scheduledTaskLifecycle);
-        components.scan("cn.mythicland.mythiclobby");
+        components.scan(
+                "cn.mythicland.mythiclobby",
+                type -> !type.getName().startsWith("cn.mythicland.mythiclobby.velocity.")
+        );
         scheduledTaskLifecycle.start();
 
         return new PluginContext(
