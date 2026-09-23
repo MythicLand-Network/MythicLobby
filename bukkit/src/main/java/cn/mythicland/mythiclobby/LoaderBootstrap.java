@@ -16,6 +16,7 @@ import cn.mythicland.framework.bukkit.task.TaskScheduler;
 import cn.mythicland.framework.menu.MenuManager;
 import cn.mythicland.mythiclobby.scoreboard.ScoreboardService;
 import cn.mythicland.mythiclobby.tab.TabService;
+import cn.mythicland.npclib.api.skin.MojangSkinService;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class LoaderBootstrap {
@@ -30,6 +31,12 @@ public final class LoaderBootstrap {
         ComponentContainer components = new ComponentContainer();
         components.bind(plugin);
         components.bind(pluginLogger);
+        components.bind(
+                MojangSkinService.class,
+                new MojangSkinService(
+                        plugin.getDataFolder().toPath().resolve("cache").resolve("npc-skins.properties")
+                )
+        );
         components.bind(components);
         components.bind(ComponentResolver.class, components);
         TaskScheduler taskScheduler = new BukkitTaskScheduler(plugin);

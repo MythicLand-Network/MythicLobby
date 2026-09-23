@@ -5,6 +5,7 @@ import cn.mythicland.framework.component.ComponentResolver;
 import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.framework.menu.MenuManager;
 import cn.mythicland.mythiclobby.log.PluginLogger;
+import cn.mythicland.npclib.api.skin.MojangSkinService;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
@@ -24,6 +25,7 @@ class ComponentGraphTest {
         List<Class<?>> bindings = new ArrayList<>(components);
         bindings.add(JavaPlugin.class);
         bindings.add(PluginLogger.class);
+        bindings.add(MojangSkinService.class);
         bindings.add(ComponentContainer.class);
         bindings.add(ComponentResolver.class);
         bindings.add(MenuManager.class);
