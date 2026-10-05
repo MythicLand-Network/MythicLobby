@@ -39,3 +39,117 @@ main:
         - "[connect] thepit"
       right-click:
         - "[connect] thepit"
+    ShowAllGames:
+      name: "&a显示所有游戏模式"
+      lore:
+        - "&8菜单选项"
+        - ""
+        - "&7当前状态: &c关闭"
+        - "&7开启后显示全部游戏模式入口。"
+        - ""
+        - "&e点击开启!"
+      material: "INK_SACK"
+      data: 8
+      amount: 1
+      slot: 26
+      keep-open: true
+      left-click:
+        - "[player] mlbmenu open main-all"
+      right-click:
+        - "[player] mlbmenu open main-all"
+
+main-all:
+  id: "main-all"
+  title: "&8选择游戏"
+  size: 27
+  permission: "group.default"
+  open-sound:
+    sound: "BLOCK_NOTE_BLOCK_PLING"
+    volume: 1.0
+    pitch: 1.0
+  click-sound:
+    sound: "CLICK"
+    volume: 1.0
+    pitch: 2.0
+  glass-enable: true
+  glass-color: 15
+  items:
+    ThePitLegacy:
+      name: "&aThePit-legacy"
+      lore:
+        - "&8经典团队竞技"
+        - ""
+        - "&7进入旧版本的 ThePit 游戏模式。"
+        - "&7保留旧版玩法与数据。"
+        - ""
+        - "&e点击进入!"
+      material: "DIRT"
+      amount: 1
+      slot: 11
+      keep-open: true
+      left-click:
+        - "[connect] thepit-legacy"
+      right-click:
+        - "[connect] thepit-legacy"
+    ThePit:
+      name: "&aThe MythicLand Pit"
+      lore:
+        - "&8团队竞技"
+        - ""
+        - "&7跳进天坑与超过50名玩家实时对决。"
+        - "&7MythicLand中节奏最快的PVP游戏。"
+        - ""
+        - "&c前方高能!"
+        - "&c你已进入极限区域,"
+        - "&c不推荐新手游玩。"
+        - ""
+        - "&e点击选择子服!"
+      material: "DIRT"
+      amount: 1
+      slot: 13
+      keep-open: true
+      glow: true
+      hide-nbt: true
+      enchants:
+        - "DURABILITY:1"
+      left-click:
+        - "[connect] thepit"
+      right-click:
+        - "[connect] thepit"
+    ThePitTest:
+      name: "&eThePit测试服"
+      lore:
+        - "&8白名单测试服"
+        - ""
+        - "&7用于测试 ThePit 的最新内容。"
+        - "&7测试数据与正式服完全隔离。"
+        - ""
+        - "&c仅限白名单玩家进入。"
+        - ""
+        - "&e点击进入!"
+      material: "DIRT"
+      amount: 1
+      slot: 15
+      keep-open: true
+      left-click:
+        - "[connect] thepit-test"
+      right-click:
+        - "[connect] thepit-test"
+    ShowAllGames:
+      name: "&a显示所有游戏模式"
+      lore:
+        - "&8菜单选项"
+        - ""
+        - "&7当前状态: &a开启"
+        - "&7当前显示全部游戏模式入口。"
+        - ""
+        - "&e点击关闭!"
+      material: "INK_SACK"
+      data: 10
+      amount: 1
+      slot: 26
+      keep-open: true
+      left-click:
+        - "[player] mlbmenu open main"
+      right-click:
+        - "[player] mlbmenu open main"

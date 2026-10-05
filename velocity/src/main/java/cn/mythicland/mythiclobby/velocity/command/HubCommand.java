@@ -19,7 +19,7 @@ public final class HubCommand implements SimpleCommand {
     private static final Component PLAYER_ONLY_MESSAGE = LEGACY_SERIALIZER.deserialize("&c该命令只能由玩家执行。");
     private static final Component ALREADY_CONNECTED_MESSAGE = LEGACY_SERIALIZER.deserialize("&c你已经在大厅服务器了!");
     private static final Component SERVER_UNAVAILABLE_MESSAGE = LEGACY_SERIALIZER.deserialize("&c大厅服务器当前不可用。");
-    private static final Component CONNECTION_FAILED_MESSAGE = LEGACY_SERIALIZER.deserialize("&c连接大厅服务器失败，请稍后再试。");
+    private static final Component CONNECTION_FAILED_MESSAGE = LEGACY_SERIALIZER.deserialize("&c连接大厅服务器失败, 请稍后再试。");
 
     private final ProxyServer proxyServer;
     private final HubConfig hubConfig;
