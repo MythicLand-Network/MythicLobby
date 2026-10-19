@@ -4,7 +4,7 @@ import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.mythiclobby.config.ChatConfig;
 import cn.mythicland.mythiclobby.config.key.ChatConfigKey;
 import cn.mythicland.mythiclobby.log.PluginLogger;
-import cn.mythicland.mythiclobby.util.CC;
+import cn.mythicland.framework.bukkit.message.CC;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -52,7 +52,7 @@ public final class ChatService {
     }
 
     private ChatSettings loadSettings() {
-        YamlConfiguration yaml = chatConfig.getYamlConfiguration();
+        YamlConfiguration yaml = chatConfig.data();
         boolean enabled = yaml.getBoolean(ChatConfigKey.ENABLED.getPath(), true);
         String format = yaml.getString(ChatConfigKey.FORMAT.getPath(), ChatSettings.DEFAULT_FORMAT);
         boolean muteAllEnabled = yaml.getBoolean(ChatConfigKey.MUTE_ALL_ENABLED.getPath(), false);

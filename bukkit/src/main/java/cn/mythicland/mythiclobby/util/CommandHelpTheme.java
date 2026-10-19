@@ -1,5 +1,7 @@
 package cn.mythicland.mythiclobby.util;
 
+import cn.mythicland.framework.bukkit.command.CommandFeedback;
+
 import org.bukkit.entity.Player;
 
 public final class CommandHelpTheme {
@@ -9,6 +11,6 @@ public final class CommandHelpTheme {
     }
 
     public static void sendUsage(Player player, String usage) {
-        player.sendMessage(HELP_PREFIX + usage);
+        CommandFeedback.send(player, HELP_PREFIX + usage);
     }
 }

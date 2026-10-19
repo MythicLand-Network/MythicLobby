@@ -2,8 +2,8 @@ package cn.mythicland.mythiclobby.item;
 
 import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.mythiclobby.placeholder.PlaceholderService;
-import cn.mythicland.mythiclobby.util.CC;
-import cn.mythicland.mythiclobby.util.MaterialCompat;
+import cn.mythicland.framework.bukkit.message.CC;
+import cn.mythicland.framework.bukkit.item.MaterialCompat;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;

@@ -251,7 +251,7 @@ public final class DisplayService {
     }
 
     private DisplaySettings loadSettings() {
-        YamlConfiguration yaml = displayConfig.getYamlConfiguration();
+        YamlConfiguration yaml = displayConfig.data();
 
         boolean enabled = yaml.getBoolean(DisplayConfigKey.ENABLED.getPath(), true);
 
@@ -274,7 +274,7 @@ public final class DisplayService {
             suffix = "";
         }
 
-        YamlConfiguration lobbyYaml = lobbyConfig.getYamlConfiguration();
+        YamlConfiguration lobbyYaml = lobbyConfig.data();
 
         boolean customJoinMessageEnabled = hasConfiguredMessage(lobbyYaml, LobbyConfigKey.MESSAGES_JOIN_MESSAGE);
         String joinMessage = lobbyYaml.getString(LobbyConfigKey.MESSAGES_JOIN_MESSAGE.getPath());

@@ -19,7 +19,7 @@ final class LobbyProtectionServiceTest {
         configuration.set("enabled", false);
         configuration.set("block-command-tab.enabled", true);
         LobbyConfig lobbyConfig = mock(LobbyConfig.class);
-        when(lobbyConfig.getYamlConfiguration()).thenReturn(configuration);
+        when(lobbyConfig.data()).thenReturn(configuration);
         LobbyProtectionService service = new LobbyProtectionService(
                 mock(JavaPlugin.class),
                 lobbyConfig,

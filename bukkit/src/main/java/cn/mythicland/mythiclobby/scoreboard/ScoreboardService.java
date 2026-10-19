@@ -147,7 +147,7 @@ public final class ScoreboardService {
     }
 
     private ScoreboardSettings loadSettings() {
-        YamlConfiguration yaml = scoreboardConfig.getYamlConfiguration();
+        YamlConfiguration yaml = scoreboardConfig.data();
 
         boolean enabled = yaml.getBoolean(ScoreboardConfigKey.ENABLED.getPath(), true);
 

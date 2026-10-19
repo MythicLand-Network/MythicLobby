@@ -6,7 +6,7 @@ import cn.mythicland.mythiclobby.npc.skin.SkinService;
 import cn.mythicland.mythiclobby.platform.npc.NpcPlatform;
 import cn.mythicland.mythiclobby.placeholder.PlaceholderService;
 import cn.mythicland.mythiclobby.platform.skin.SkinData;
-import cn.mythicland.mythiclobby.util.CC;
+import cn.mythicland.framework.bukkit.message.CC;
 import cn.mythicland.mythiclobby.util.NpcNames;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

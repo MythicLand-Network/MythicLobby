@@ -17,7 +17,7 @@ public final class HologramRepository {
     }
 
     public List<StoredHologram> loadAll() {
-        return mapper.readAll(config.getYamlConfiguration().getConfigurationSection("holograms"));
+        return mapper.readAll(config.data().getConfigurationSection("holograms"));
     }
 
     public void reload() {
@@ -26,16 +26,16 @@ public final class HologramRepository {
 
     public void save(StoredHologram storedHologram) {
         mapper.write(ensureHologramsSection(), storedHologram);
-        config.saveYamlConfiguration();
+        config.save();
     }
 
     public void delete(String hologramName) {
         mapper.delete(ensureHologramsSection(), hologramName);
-        config.saveYamlConfiguration();
+        config.save();
     }
 
     private ConfigurationSection ensureHologramsSection() {
-        ConfigurationSection section = config.getYamlConfiguration().getConfigurationSection("holograms");
-        return section != null ? section : config.getYamlConfiguration().createSection("holograms");
+        ConfigurationSection section = config.data().getConfigurationSection("holograms");
+        return section != null ? section : config.data().createSection("holograms");
     }
 }

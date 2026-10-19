@@ -1,11 +1,12 @@
 package cn.mythicland.mythiclobby.item;
 
+import cn.mythicland.framework.bukkit.item.MaterialNames;
+
 import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.mythiclobby.config.ItemConfig;
 import cn.mythicland.mythiclobby.gui.model.MenuCommand;
 import cn.mythicland.mythiclobby.gui.menu.MenuCommandExecutor;
 import cn.mythicland.mythiclobby.log.PluginLogger;
-import cn.mythicland.mythiclobby.util.MaterialCompat;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -37,7 +38,7 @@ public final class LobbyItemRepository {
     }
 
     public List<LobbyItemDefinition> loadAll() {
-        YamlConfiguration yaml = itemConfig.getYamlConfiguration();
+        YamlConfiguration yaml = itemConfig.data();
         ConfigurationSection itemsSection = yaml.getConfigurationSection("items");
         if (itemsSection == null) {
             return Collections.emptyList();
@@ -122,7 +123,7 @@ public final class LobbyItemRepository {
             return null;
         }
 
-        Material material = MaterialCompat.matchMaterial(materialName);
+        Material material = MaterialNames.match(materialName);
         if (material == null) {
             warn(itemId, "uses invalid material '" + materialName + "'");
         }

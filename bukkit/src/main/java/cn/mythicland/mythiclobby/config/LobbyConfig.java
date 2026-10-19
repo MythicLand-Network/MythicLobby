@@ -1,11 +1,11 @@
 package cn.mythicland.mythiclobby.config;
 
 import cn.mythicland.framework.component.InjectComponent;
-import cn.mythicland.framework.bukkit.config.AbstractYamlConfiguration;
+import cn.mythicland.framework.bukkit.config.YamlConfig;
 import org.bukkit.plugin.Plugin;
 
 @InjectComponent
-public final class LobbyConfig extends AbstractYamlConfiguration {
+public final class LobbyConfig extends YamlConfig {
     public LobbyConfig(Plugin plugin, ConfigManager configManager) {
         super(plugin, "config.yml");
         configManager.register(this);

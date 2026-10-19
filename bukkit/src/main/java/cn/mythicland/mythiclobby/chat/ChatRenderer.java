@@ -2,7 +2,7 @@ package cn.mythicland.mythiclobby.chat;
 
 import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.mythiclobby.placeholder.PlaceholderService;
-import cn.mythicland.mythiclobby.util.CC;
+import cn.mythicland.framework.bukkit.message.CC;
 import org.bukkit.entity.Player;
 
 @InjectComponent

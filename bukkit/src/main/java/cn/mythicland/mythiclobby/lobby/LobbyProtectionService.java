@@ -3,7 +3,7 @@ package cn.mythicland.mythiclobby.lobby;
 import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.mythiclobby.config.LobbyConfig;
 import cn.mythicland.mythiclobby.log.PluginLogger;
-import cn.mythicland.mythiclobby.util.LocationNormalizer;
+import cn.mythicland.framework.bukkit.location.LocationSnapper;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -180,9 +180,9 @@ public final class LobbyProtectionService {
             return false;
         }
 
-        Location normalizedLocation = LocationNormalizer.normalizeSpawnLocation(location);
+        Location normalizedLocation = LocationSnapper.snapBlockAndYaw(location);
 
-        YamlConfiguration yaml = lobbyConfig.getYamlConfiguration();
+        YamlConfiguration yaml = lobbyConfig.data();
         yaml.set("spawn.enabled", true);
         yaml.set("spawn.location.world", normalizedLocation.getWorld().getName());
         yaml.set("spawn.location.x", normalizedLocation.getX());
@@ -197,7 +197,7 @@ public final class LobbyProtectionService {
             yaml.set("lobby-worlds", lobbyWorlds);
         }
 
-        lobbyConfig.saveYamlConfiguration();
+        lobbyConfig.save();
         settings = loadSettings();
         restartTimeLockTask();
         return true;
@@ -313,7 +313,7 @@ public final class LobbyProtectionService {
     }
 
     private LobbySettings loadSettings() {
-        YamlConfiguration yaml = lobbyConfig.getYamlConfiguration();
+        YamlConfiguration yaml = lobbyConfig.data();
         boolean enabled = yaml.getBoolean("enabled", true);
         CommandTabCompleteSettings commandTabCompleteSettings = readCommandTabCompleteSettings(yaml);
         Set<String> lobbyWorlds = readLobbyWorlds(yaml);

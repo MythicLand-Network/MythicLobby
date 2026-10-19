@@ -1,5 +1,7 @@
 package cn.mythicland.mythiclobby.gui.menu;
 
+import cn.mythicland.framework.bukkit.item.MaterialNames;
+
 import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.framework.menu.ClickType;
 import cn.mythicland.mythiclobby.gui.button.MenuButton;
@@ -9,8 +11,7 @@ import cn.mythicland.mythiclobby.gui.model.MenuCommand;
 import cn.mythicland.mythiclobby.gui.model.MenuItemEnchantment;
 import cn.mythicland.mythiclobby.gui.model.MenuSound;
 import cn.mythicland.mythiclobby.log.PluginLogger;
-import cn.mythicland.mythiclobby.util.MaterialCompat;
-import cn.mythicland.mythiclobby.util.SoundCompat;
+import cn.mythicland.framework.bukkit.message.SoundCompat;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -53,7 +54,7 @@ public final class MenuRepository {
     }
 
     public List<ConfigMenu> loadAll() {
-        YamlConfiguration yaml = menuConfig.getYamlConfiguration();
+        YamlConfiguration yaml = menuConfig.data();
         List<ConfigMenu> menus = new ArrayList<>();
         for (String menuId : yaml.getKeys(false)) {
             ConfigurationSection section = yaml.getConfigurationSection(menuId);
@@ -396,7 +397,7 @@ public final class MenuRepository {
             return null;
         }
 
-        Material material = MaterialCompat.matchMaterial(materialName);
+        Material material = MaterialNames.match(materialName);
         if (material == null) {
             warn(menuId, "item '" + itemId + "' uses invalid material '" + materialName + "'");
         }

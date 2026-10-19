@@ -17,7 +17,7 @@ final class ChatServiceTest {
         YamlConfiguration configuration = new YamlConfiguration();
         configuration.set("mute-all.enabled", true);
         ChatConfig chatConfig = mock(ChatConfig.class);
-        when(chatConfig.getYamlConfiguration()).thenReturn(configuration);
+        when(chatConfig.data()).thenReturn(configuration);
         ChatService service = new ChatService(
                 chatConfig,
                 mock(ChatRenderer.class),

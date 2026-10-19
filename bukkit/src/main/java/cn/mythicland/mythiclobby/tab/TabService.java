@@ -167,7 +167,7 @@ public final class TabService {
     }
 
     private TabSettings loadSettings() {
-        YamlConfiguration yaml = tabConfig.getYamlConfiguration();
+        YamlConfiguration yaml = tabConfig.data();
 
         boolean enabled = yaml.getBoolean(TabConfigKey.ENABLED.getPath(), true);
 

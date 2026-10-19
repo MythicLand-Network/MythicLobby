@@ -12,6 +12,7 @@ configurations {
 
 dependencies {
     compileOnly 'cn.mythicland:mythic-framework-core:1.0.0'
+    firstPartyRuntimeGraph 'cn.mythicland:mythic-framework-core:1.0.0'
     testImplementation 'cn.mythicland:mythic-framework-core:1.0.0'
 
     commonRuntimeLibraries 'org.reflections:reflections:0.10.2'

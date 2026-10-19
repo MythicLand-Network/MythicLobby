@@ -5,7 +5,7 @@ import cn.mythicland.framework.component.LoadOrder;
 import cn.mythicland.framework.component.LoadPhase;
 import cn.mythicland.framework.component.ManagedLifecycle;
 import cn.mythicland.mythiclobby.platform.hologram.HologramPlatform;
-import cn.mythicland.mythiclobby.util.LocationNormalizer;
+import cn.mythicland.framework.bukkit.location.LocationSnapper;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -291,7 +291,7 @@ public final class HologramService implements ManagedLifecycle {
     }
 
     private Location normalizeCreationLocation(Location location) {
-        return LocationNormalizer.normalizeSpawnLocation(location);
+        return LocationSnapper.snapBlockAndYaw(location);
     }
 
     private List<String> sanitizeDisplayLines(List<String> input) {

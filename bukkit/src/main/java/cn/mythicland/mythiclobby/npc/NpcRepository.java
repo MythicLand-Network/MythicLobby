@@ -17,7 +17,7 @@ public final class NpcRepository {
     }
 
     public List<StoredNpc> loadAll() {
-        return mapper.readAll(config.getYamlConfiguration().getConfigurationSection("npcs"));
+        return mapper.readAll(config.data().getConfigurationSection("npcs"));
     }
 
     public void reload() {
@@ -26,16 +26,16 @@ public final class NpcRepository {
 
     public void save(StoredNpc storedNpc) {
         mapper.write(ensureNpcsSection(), storedNpc);
-        config.saveYamlConfiguration();
+        config.save();
     }
 
     public void delete(String npcName) {
         mapper.delete(ensureNpcsSection(), npcName);
-        config.saveYamlConfiguration();
+        config.save();
     }
 
     private ConfigurationSection ensureNpcsSection() {
-        ConfigurationSection section = config.getYamlConfiguration().getConfigurationSection("npcs");
-        return section != null ? section : config.getYamlConfiguration().createSection("npcs");
+        ConfigurationSection section = config.data().getConfigurationSection("npcs");
+        return section != null ? section : config.data().createSection("npcs");
     }
 }

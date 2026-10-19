@@ -4,8 +4,8 @@ import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.framework.component.LoadOrder;
 import cn.mythicland.framework.component.LoadPhase;
 import cn.mythicland.framework.component.ManagedLifecycle;
-import cn.mythicland.mythiclobby.util.CC;
-import cn.mythicland.mythiclobby.util.LocationNormalizer;
+import cn.mythicland.framework.bukkit.message.CC;
+import cn.mythicland.framework.bukkit.location.LocationSnapper;
 import cn.mythicland.mythiclobby.util.NpcNames;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -89,7 +89,7 @@ public final class NpcManager implements ManagedLifecycle {
         StoredNpc storedNpc = new StoredNpc(
                 npcName,
                 displayLines,
-                LocationNormalizer.normalizeSpawnLocation(location),
+                LocationSnapper.snapBlockAndYaw(location),
                 resolveSkinPlayerName(displayLines, creator),
                 new ArrayList<>()
         );
@@ -159,7 +159,7 @@ public final class NpcManager implements ManagedLifecycle {
         }
 
         StoredNpc updatedNpc = selectedNpc.getStoredNpc()
-                .withLocation(LocationNormalizer.normalizeSpawnLocation(newLocation));
+                .withLocation(LocationSnapper.snapBlockAndYaw(newLocation));
         updateSelectedNpc(selectedNpc, updatedNpc, true);
         return true;
     }
