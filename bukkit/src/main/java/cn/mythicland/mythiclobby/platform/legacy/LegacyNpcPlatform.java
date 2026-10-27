@@ -26,13 +26,12 @@ public final class LegacyNpcPlatform implements NpcPlatform, ManagedLifecycle {
 
     @Override
     public Object spawn(Location location, List<String> displayLines, SkinData skin) {
-        NPC npc = npcLib.createNPC(displayLines);
-        npc.setLocation(location);
-        if (skin != null) {
-            npc.setSkin(new Skin(skin.value(), skin.signature()));
-        }
-        npc.create();
-        return npc;
+        return npcLib.createPacketNpc(location, options -> {
+            options.text(displayLines);
+            if (skin != null) {
+                options.skin(new Skin(skin.value(), skin.signature()));
+            }
+        });
     }
 
     @Override
