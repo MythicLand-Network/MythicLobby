@@ -1,8 +1,8 @@
 package cn.mythicland.mythiclobby.listener;
 
-import cn.mythicland.framework.bukkit.ListenerComponent;
+import cn.mythicland.framework.bukkit.component.ListenerComponent;
+import cn.mythicland.framework.bukkit.menu.MenuManager;
 import cn.mythicland.framework.component.InjectComponent;
-import cn.mythicland.framework.menu.MenuManager;
 import cn.mythicland.mythiclobby.lobby.LobbyProtectionService;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;

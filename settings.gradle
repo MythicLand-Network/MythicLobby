@@ -25,4 +25,8 @@ if (!npcLibDirectory.isDirectory()) {
 }
 
 includeBuild(frameworkDirectory)
-includeBuild(npcLibDirectory)
+includeBuild(npcLibDirectory) {
+    dependencySubstitution {
+        substitute module('cn.mythicland:mythic-npclib') using project(':')
+    }
+}

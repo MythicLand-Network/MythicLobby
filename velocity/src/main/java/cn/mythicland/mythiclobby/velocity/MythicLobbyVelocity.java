@@ -51,8 +51,6 @@ public final class MythicLobbyVelocity {
                 FrameworkRuntimeClassLoading.velocity(
                         List.of(
                                 "cn.mythicland.mythiclobby.",
-                                "org.reflections.",
-                                "javassist.",
                                 "org.yaml.snakeyaml."
                         ),
                         List.of(MythicLobbyVelocity.class.getName()),

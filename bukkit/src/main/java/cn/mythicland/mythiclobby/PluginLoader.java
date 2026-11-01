@@ -1,14 +1,13 @@
 package cn.mythicland.mythiclobby;
 
+import cn.mythicland.framework.bukkit.bootstrap.BukkitRegistration;
+import cn.mythicland.framework.bukkit.component.BukkitComponentRegistrar;
 import cn.mythicland.mythiclobby.config.ConfigManager;
 import cn.mythicland.mythiclobby.gui.menu.LobbyMenuService;
 import cn.mythicland.mythiclobby.log.PluginLogger;
-import cn.mythicland.framework.bukkit.BukkitComponentRegistrar;
-import cn.mythicland.framework.bukkit.BukkitRegistration;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PluginLoader {
     private static PluginContext context;

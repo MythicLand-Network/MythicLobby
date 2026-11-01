@@ -1,19 +1,18 @@
 package cn.mythicland.mythiclobby;
 
+import cn.mythicland.framework.bukkit.menu.MenuManager;
 import cn.mythicland.framework.component.ComponentContainer;
 import cn.mythicland.framework.component.ComponentResolver;
 import cn.mythicland.framework.component.InjectComponent;
-import cn.mythicland.framework.menu.MenuManager;
 import cn.mythicland.mythiclobby.log.PluginLogger;
 import cn.mythicland.npclib.api.skin.MojangSkinService;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.junit.jupiter.api.Test;
-import org.reflections.Reflections;
-
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.junit.jupiter.api.Test;
+import org.reflections.Reflections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

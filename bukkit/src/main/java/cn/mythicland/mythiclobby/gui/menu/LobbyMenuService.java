@@ -1,13 +1,12 @@
 package cn.mythicland.mythiclobby.gui.menu;
 
+import cn.mythicland.framework.bukkit.menu.MenuManager;
 import cn.mythicland.framework.component.InjectComponent;
-import cn.mythicland.framework.menu.MenuManager;
 import cn.mythicland.mythiclobby.gui.model.MenuSound;
-import org.bukkit.entity.Player;
-
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.bukkit.entity.Player;
 
 @InjectComponent
 public final class LobbyMenuService {

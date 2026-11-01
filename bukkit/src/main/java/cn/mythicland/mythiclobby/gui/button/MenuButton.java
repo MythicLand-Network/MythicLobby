@@ -1,23 +1,22 @@
 package cn.mythicland.mythiclobby.gui.button;
 
-import cn.mythicland.framework.menu.ClickType;
-import cn.mythicland.framework.menu.MenuManager;
+import cn.mythicland.framework.bukkit.menu.ClickType;
+import cn.mythicland.framework.bukkit.menu.MenuManager;
+import cn.mythicland.mythiclobby.gui.menu.LobbyMenuCommandExecutor;
 import cn.mythicland.mythiclobby.gui.menu.MenuRenderer;
 import cn.mythicland.mythiclobby.gui.model.MenuCommand;
 import cn.mythicland.mythiclobby.gui.model.MenuItemEnchantment;
 import cn.mythicland.mythiclobby.gui.model.MenuSound;
-import cn.mythicland.mythiclobby.gui.menu.LobbyMenuCommandExecutor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
-public final class MenuButton extends cn.mythicland.framework.menu.AbstractButton {
+public final class MenuButton extends cn.mythicland.framework.bukkit.menu.AbstractButton {
     private final int slot;
     private final String id;
     private final boolean keepOpen;

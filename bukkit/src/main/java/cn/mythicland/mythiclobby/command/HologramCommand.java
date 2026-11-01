@@ -1,18 +1,17 @@
 package cn.mythicland.mythiclobby.command;
 
-import cn.mythicland.framework.bukkit.CommandComponent;
-import cn.mythicland.framework.command.AbstractCommand;
-import cn.mythicland.framework.command.CommandContext;
-import cn.mythicland.framework.command.CommandRoute;
+import cn.mythicland.framework.bukkit.command.AbstractCommand;
+import cn.mythicland.framework.bukkit.command.CommandContext;
+import cn.mythicland.framework.bukkit.command.CommandRoute;
+import cn.mythicland.framework.bukkit.component.CommandComponent;
 import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.mythiclobby.config.key.MessageKey;
 import cn.mythicland.mythiclobby.hologram.HologramService;
 import cn.mythicland.mythiclobby.message.MessageService;
 import cn.mythicland.mythiclobby.util.CommandHelpTheme;
 import cn.mythicland.mythiclobby.util.NpcDisplayParser;
-import org.bukkit.entity.Player;
-
 import java.util.List;
+import org.bukkit.entity.Player;
 
 @InjectComponent
 @CommandComponent

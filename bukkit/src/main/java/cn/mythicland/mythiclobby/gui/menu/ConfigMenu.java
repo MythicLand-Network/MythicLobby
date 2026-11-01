@@ -1,14 +1,13 @@
 package cn.mythicland.mythiclobby.gui.menu;
 
+import cn.mythicland.framework.bukkit.menu.AbstractButton;
+import cn.mythicland.framework.bukkit.menu.Menu;
 import cn.mythicland.mythiclobby.gui.button.MenuButton;
-import cn.mythicland.framework.menu.AbstractButton;
-import cn.mythicland.framework.menu.Menu;
 import cn.mythicland.mythiclobby.gui.model.MenuSound;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public final class ConfigMenu extends AbstractMenu {
     private final boolean glassEnabled;
@@ -66,7 +65,7 @@ public final class ConfigMenu extends AbstractMenu {
 
     @Override
     protected AbstractButton createBackgroundButton(short color) {
-        return new cn.mythicland.framework.menu.AbstractDisplayButton() {
+        return new cn.mythicland.framework.bukkit.menu.AbstractDisplayButton() {
             @Override
             public ItemStack buildDisplayItem(Player player) {
                 return renderer.createGlassPane(color);

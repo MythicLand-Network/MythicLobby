@@ -1,14 +1,13 @@
 package cn.mythicland.mythiclobby.gui.menu;
 
+import cn.mythicland.framework.bukkit.menu.MenuManager;
 import cn.mythicland.framework.component.InjectComponent;
-import cn.mythicland.framework.menu.MenuManager;
 import cn.mythicland.mythiclobby.gui.model.MenuCommand;
 import cn.mythicland.mythiclobby.log.PluginLogger;
 import cn.mythicland.mythiclobby.proxy.BungeeConnectService;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.List;
 
 @InjectComponent
 public final class LobbyMenuCommandExecutor {

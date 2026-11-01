@@ -1,16 +1,15 @@
 package cn.mythicland.mythiclobby.listener;
 
-import cn.mythicland.framework.bukkit.ListenerComponent;
+import cn.mythicland.framework.bukkit.component.ListenerComponent;
 import cn.mythicland.framework.component.InjectComponent;
 import cn.mythicland.mythiclobby.chat.ChatService;
+import java.util.concurrent.ExecutionException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.concurrent.ExecutionException;
 
 @InjectComponent
 @ListenerComponent

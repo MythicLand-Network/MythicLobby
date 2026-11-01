@@ -1,7 +1,6 @@
 package cn.mythicland.mythiclobby.gui.model;
 
-import cn.mythicland.framework.menu.ClickType;
-
+import cn.mythicland.framework.bukkit.menu.ClickType;
 import java.util.ArrayList;
 import java.util.List;
 

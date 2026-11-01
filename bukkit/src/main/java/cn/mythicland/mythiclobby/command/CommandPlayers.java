@@ -1,6 +1,6 @@
 package cn.mythicland.mythiclobby.command;
 
-import cn.mythicland.framework.command.CommandContext;
+import cn.mythicland.framework.bukkit.command.CommandContext;
 import org.bukkit.entity.Player;
 
 final class CommandPlayers {

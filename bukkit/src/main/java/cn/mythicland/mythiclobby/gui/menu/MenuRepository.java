@@ -1,29 +1,28 @@
 package cn.mythicland.mythiclobby.gui.menu;
 
 import cn.mythicland.framework.bukkit.item.MaterialNames;
-
+import cn.mythicland.framework.bukkit.menu.ClickType;
+import cn.mythicland.framework.bukkit.message.SoundCompat;
 import cn.mythicland.framework.component.InjectComponent;
-import cn.mythicland.framework.menu.ClickType;
-import cn.mythicland.mythiclobby.gui.button.MenuButton;
 import cn.mythicland.mythiclobby.config.MenuConfig;
+import cn.mythicland.mythiclobby.gui.button.MenuButton;
 import cn.mythicland.mythiclobby.gui.model.MenuClickAction;
 import cn.mythicland.mythiclobby.gui.model.MenuCommand;
 import cn.mythicland.mythiclobby.gui.model.MenuItemEnchantment;
 import cn.mythicland.mythiclobby.gui.model.MenuSound;
 import cn.mythicland.mythiclobby.log.PluginLogger;
-import cn.mythicland.framework.bukkit.message.SoundCompat;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
+
 @InjectComponent
 public final class MenuRepository {
     private static final int DEFAULT_SIZE = 9;

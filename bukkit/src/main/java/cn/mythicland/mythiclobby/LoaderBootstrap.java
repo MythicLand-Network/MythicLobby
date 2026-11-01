@@ -1,5 +1,9 @@
 package cn.mythicland.mythiclobby;
 
+import cn.mythicland.framework.bukkit.bootstrap.BukkitComponents;
+import cn.mythicland.framework.bukkit.bootstrap.BukkitComponents.Capability;
+import cn.mythicland.framework.bukkit.task.ScheduledTaskLifecycle;
+import cn.mythicland.framework.component.ComponentContainer;
 import cn.mythicland.mythiclobby.config.ConfigManager;
 import cn.mythicland.mythiclobby.display.DisplayService;
 import cn.mythicland.mythiclobby.gui.menu.LobbyMenuService;
@@ -8,12 +12,6 @@ import cn.mythicland.mythiclobby.listener.CommandTabBlockService;
 import cn.mythicland.mythiclobby.lobby.LobbyProtectionService;
 import cn.mythicland.mythiclobby.log.PluginLogger;
 import cn.mythicland.mythiclobby.proxy.BungeeConnectService;
-import cn.mythicland.framework.component.ComponentContainer;
-import cn.mythicland.framework.component.ComponentResolver;
-import cn.mythicland.framework.bukkit.task.BukkitTaskScheduler;
-import cn.mythicland.framework.bukkit.task.ScheduledTaskLifecycle;
-import cn.mythicland.framework.bukkit.task.TaskScheduler;
-import cn.mythicland.framework.menu.MenuManager;
 import cn.mythicland.mythiclobby.scoreboard.ScoreboardService;
 import cn.mythicland.mythiclobby.tab.TabService;
 import cn.mythicland.npclib.api.skin.MojangSkinService;
@@ -28,8 +26,7 @@ public final class LoaderBootstrap {
 
     public PluginContext prepare() {
         PluginLogger pluginLogger = new PluginLogger(plugin);
-        ComponentContainer components = new ComponentContainer();
-        components.bind(plugin);
+        ComponentContainer components = BukkitComponents.create(plugin, Capability.MENUS, Capability.SCHEDULED_TASKS);
         components.bind(pluginLogger);
         components.bind(
                 MojangSkinService.class,
@@ -37,19 +34,11 @@ public final class LoaderBootstrap {
                         plugin.getDataFolder().toPath().resolve("cache").resolve("npc-skins.properties")
                 )
         );
-        components.bind(components);
-        components.bind(ComponentResolver.class, components);
-        TaskScheduler taskScheduler = new BukkitTaskScheduler(plugin);
-        components.bind(TaskScheduler.class, taskScheduler);
-        MenuManager menuManager = new MenuManager(plugin, components, taskScheduler);
-        components.bind(menuManager);
-        ScheduledTaskLifecycle scheduledTaskLifecycle = new ScheduledTaskLifecycle(components, taskScheduler);
-        components.bind(scheduledTaskLifecycle);
         components.scan(
                 "cn.mythicland.mythiclobby",
                 type -> !type.getName().startsWith("cn.mythicland.mythiclobby.velocity.")
         );
-        scheduledTaskLifecycle.start();
+        components.resolve(ScheduledTaskLifecycle.class).start();
 
         return new PluginContext(
                 plugin,

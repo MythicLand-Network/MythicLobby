@@ -1,10 +1,10 @@
 package cn.mythicland.mythiclobby.gui.menu;
 
-import cn.mythicland.framework.menu.Menu;
-import cn.mythicland.framework.menu.AbstractButton;
+import cn.mythicland.framework.bukkit.menu.AbstractButton;
+import cn.mythicland.framework.bukkit.menu.Menu;
 import org.bukkit.entity.Player;
 
-public abstract class AbstractMenu extends cn.mythicland.framework.menu.AbstractMenu {
+public abstract class AbstractMenu extends cn.mythicland.framework.bukkit.menu.AbstractMenu {
     private final String id;
     private final String title;
     private final int size;
